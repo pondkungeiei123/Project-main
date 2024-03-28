@@ -27,16 +27,16 @@
                 </a>
             </li> -->
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="list_cus.php">
                     รายชื่อช่างลูกค้า
                 </a>
-            </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="list_cus.php">
-                    เงื่อนไขรายงาน
-                </a>
             </li> -->
+            <li class="nav-item">
+                <a class="nav-link" href="map.php">
+                    map
+                </a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link " href="repost.php">
                     รายงาน

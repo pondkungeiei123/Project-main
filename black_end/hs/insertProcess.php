@@ -34,38 +34,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // รับข้อมูลจากฟอร์ม
             $user_name = $_POST['user_name'];
             $user_lastname = $_POST['user_lastname'];
-            $user_birthdate = $_POST['user_birthdate'];
-            $user_age = $_POST['user_age'];
-            $user_gender = $_POST['user_gender'];
             $user_idcard = $_POST['user_idcard'];
             $user_email = $_POST['user_email'];
             $user_password = $_POST['user_password'];
-            $user_nationality = $_POST['user_nationality'];
-            $user_religion = $_POST['user_religion'];
             $user_phone = $_POST['user_phone'];
+            $user_latitude = $_POST['user_latitude'];
+            $user_longtitude = $_POST['user_longtitude'];
 
             // SQL สำหรับเพิ่มข้อมูล
-            $sql = "INSERT INTO user_table (user_name, user_lastname, user_birthdate, user_age, user_gender, user_idcard, user_email, user_password,  user_nationality, user_religion, user_phone, user_Certificate)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO user_table (user_name, user_lastname, user_idcard, user_email, user_password, user_phone,user_latitude, user_longtitude, user_Certificate)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // เตรียมคำสั่ง SQL
             $stmt = $conn->prepare($sql);
 
             // ผูกค่าพารามิเตอร์
             $stmt->bind_param(
-                "ssssssssssss",
+                "sssssssss",
                 $user_name,
                 $user_lastname,
-                $user_birthdate,
-                $user_age,
-                $user_gender,
                 $user_idcard,
                 $user_email,
                 $user_password,
-                $user_nationality,
-                $user_religion,
                 $user_phone,
+                $user_latitude,
+                $user_longtitude,
                 $target_file
+                
             );
 
             // ทำการ execute คำสั่ง SQL

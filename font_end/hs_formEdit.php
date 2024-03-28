@@ -59,50 +59,23 @@
                         </div>
                         <div class=" col-md-6 ">
                             <div class="form-group">
-                                <label for="user_gender">เพศ:</label>
-                                <select class="form-control" name="user_gender" required>
-                                    <option value="male" <?= ($userData['user_gender'] === 'male') ? 'selected' : ''; ?>>ชาย</option>
-                                    <option value="female" <?= ($userData['user_gender'] === 'female') ? 'selected' : ''; ?>>หญิง</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class=" col-md-6 ">
-                            <div class="form-group">
-                                <label for="user_age">อายุ:</label>
-                                <input type="number" class="form-control" name="user_age" value="<?= $userData['user_age']; ?>" required>
-                            </div>
-                        </div>
-                        <div class=" col-md-6 ">
-                            <div class="form-group">
                                 <label for="user_phone">เบอร์โทรศัพท์:</label>
                                 <input type="phone" class="form-control" name="user_phone" value="<?= $userData['user_phone']; ?>" required>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_idcard">หมายเลขบัตรประชาชน:</label>
-                                <input type="number" class="form-control" name="user_idcard" value="<?= $userData['user_idcard']; ?>" required>
+                                <label for="user_latitude">ละติจูด:</label>
+                                <input type="text" class="form-control" id="user_latitude" name="user_latitude" required>
                             </div>
                         </div>
-                        
-                        <div class=" col-md-5 ">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_birthdate">วัน-เดือน-ปีเกิด:</label>
-                                <input type="date" class="form-control" id="user_birthdate" name="user_birthdate" required>
+                                <label for="user_longtitude">ลองจิจูด:</label>
+                                <input type="text" class="form-control" id="user_longtitude" name="user_longtitude" required>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
-                            <div class="form-group">
-                                <label for="user_nationality">สัญชาติ:</label>
-                                <input type="nationality" class="form-control" name="user_nationality	" value="<?= $userData['user_nationality']; ?>" required disabled>
-                            </div>
-                        </div>
-                        <div class=" col-md-6 ">
-                            <div class="form-group">
-                                <label for="user_religion">ศาสนา:</label>
-                                <input type="religion" class="form-control" name="user_religion" value="<?= $userData['user_religion']; ?>" required disabled>
-                            </div>
-                        </div>
+                    </div>
                         <div class=" col-md-12 ">
                             <div class="form-group">
                                 <label for='user_Certificate'>ใบเซอร์:</label>
@@ -112,6 +85,7 @@
                                 
                             </div>
                         </div>
+                        
                         <button type="submit" class="btn btn-primary">ยืนยันการเเก้ไข</button>
                     </div>
                 </form>

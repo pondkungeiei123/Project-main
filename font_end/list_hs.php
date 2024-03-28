@@ -4,20 +4,21 @@ ob_start();
 <!-- Your page-specific content -->
 <br>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f6005">
-<h2> รายชื่อช่างตัดผม</h2> 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">
-                        เพิ่มข้อมูล
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <h2> รายชื่อช่างตัดผม</h2>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">
+                    เพิ่มข้อมูล
+                </button>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
-        <div class="col-md-12"> <br>
+        <div class="col-md-12">
+            <br>
             <h3> </h3>
             <table class="table table-striped table-hover table-responsive table-bordered">
                 <thead>
@@ -73,83 +74,70 @@ ob_start();
                                 <input type="text" class="form-control " id="user_name" name="user_name" required>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_lastname">นามสกุล:</label>
                                 <input type="text" class="form-control " id="user_lastname" name="user_lastname" required>
                             </div>
                         </div>
 
-                        <div class=" col-md-5 ">
-                            <div class="form-group">
-                                <label for="user_birthdate">วัน-เดือน-ปีเกิด:</label>
-                                <input type="date" class="form-control" id="user_birthdate" name="user_birthdate" required>
-                            </div>
-                        </div>
-                        <div class=" col-md-3 ">
-                            <div class="form-group">
-                                <label for="user_age">อายุ:</label>
-                                <input type="text " class="form-control" id="user_age" name="user_age" required>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="user_gender">เพศ:</label>
-                                <select class="form-select" id="user_gender" name="user_gender" required>
-                                    <option value="male">ชาย</option>
-                                    <option value="female">หญิง</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class=" col-md-12 ">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="user_idcard">หมายเลขบัตรประชาชน:</label>
                                 <input type="text" class="form-control" id="user_idcard" name="user_idcard" required>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_email">Email:</label>
                                 <input type="email" class="form-control " id="user_email" name="user_email" required>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_password">password:</label>
                                 <input type="password" class="form-control " id="user_password" name="user_password" required>
                             </div>
                         </div>
 
-                        <div class=" col-md-12 ">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="user_address">ที่อยู่ปัจจุบัน:</label>
                                 <textarea id="user_address" class="form-control" name="user_address" rows="3" required></textarea>
                             </div>
                         </div>
-
-                        <div class=" col-md-6 ">
-                            <div class="form-group">
-                                <label for="user_nationality">สัญชาติ:</label>
-                                <input type="text" class="form-control" id="user_nationality" name="user_nationality" required>
-                            </div>
-                        </div>
-                        <div class=" col-md-6 ">
-                            <div class="form-group">
-                                <label for="user_religion">ศาสนา:</label>
-                                <input type="text" class="form-control" id="user_religion" name="user_religion" required>
-                            </div>
-                        </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_phone">เบอร์ติดต่อ:</label>
                                 <input type="text" class="form-control" id="user_phone" name="user_phone" required>
                             </div>
                         </div>
 
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_Certificate">ส่งใบเซอร์:</label>
                                 <input type="file" class="form-control" id="user_Certificate" name="user_Certificate" accept="image/*">
+                            </div>
+                        </div>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d491062.2582593816!2d103.47779549053939!3d15.939224907901758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3117e5d2164cb387%3A0x102b54113604a50!2z4Lij4LmJ4Lit4Lii4LmA4Lit4LmH4LiU!5e0!3m2!1sth!2sth!4v1711518132877!5m2!1sth!2sth" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user_namelocation">ชื่อสถานที่:</label>
+                                <input type="text" class="form-control" id="user_namelocation" name="user_namelocation" required>
+                            </div>
+                        </div>
+                        <!-- <div id="map" style="height: 400px; width: 100%;"></div> ปรับขนาดแผนที่ -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user_latitude">ละติจูด:</label>
+                                <input type="text" class="form-control" id="user_latitude" name="user_latitude" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user_longtitude">ลองจิจูด:</label>
+                                <input type="text" class="form-control" id="user_longtitude" name="user_longtitude" required>
                             </div>
                         </div>
                     </div>
@@ -166,7 +154,35 @@ ob_start();
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!-- Include SweetAlert2 library -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+<script>
+    var map;
+    var marker;
 
+    function initMap() {
+        var defaultLocation = {lat: 13.7563, lng: 100.5018}; // ตำแหน่งเริ่มต้น (กรุงเทพมหานคร)
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: defaultLocation,
+            zoom: 13
+        });
+
+        marker = new google.maps.Marker({
+            position: defaultLocation,
+            map: map,
+            draggable: true
+        });
+
+        google.maps.event.addListener(marker, 'dragend', function(event) {
+            document.getElementById('user_latitude').value = event.latLng.lat();
+            document.getElementById('user_longitude').value = event.latLng.lng();
+        });
+    }
+
+    // Function to handle the form submission for adding a new user
+    function submitForm() {
+        // ส่งข้อมูลฟอร์มผ่าน AJAX
+    }
+</script>
 <script>
     // Function to handle the confirmation dialog for deletion
     function confirmDeletion(id) {
@@ -251,6 +267,7 @@ ob_start();
     });
 }
 </script>
+
 <!-- ... -->
 <?php
 $content = ob_get_clean();

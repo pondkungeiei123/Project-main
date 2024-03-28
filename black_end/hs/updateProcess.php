@@ -14,53 +14,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
 
         // Update user data based on the form inputs
-        $userId = $_POST['user_id'];
-        $user_birthdate = $_POST['user_birthdate'];
-        $user_gender = $_POST['user_gender'];
-        $user_idcard = $_POST['user_idcard'];
-        $user_age = $_POST['user_age'];
         $user_phone = $_POST['user_phone'];
+        $user_latitude = $_POST['user_latitude'];
+        $user_longtitude = $_POST['user_longtitude'];
 
         // Check if the Certificate file is being updated
         if (isset($_FILES['user_Certificate']) && $_FILES['user_Certificate']['size'] > 0) {
-            // Handle Certificate file update similar to the insert process
+            $certificate_file = $_FILES['user_Certificate']['name'];
+            $certificate_temp = $_FILES['user_Certificate']['tmp_name'];
+            $file_info = pathinfo($certificate_file);
+            $extension = $file_info['extension'];
 
-            // ... (Refer to your existing code for handling file upload and move)
+            // Define target directory
+            $target_directory = "../../asset/Certificate/";
+            $target_directory .= date("Y-m-d") . "/";
+
+            // Check and create directory if not exists
+            if (!file_exists($target_directory)) {
+                if (!mkdir($target_directory, 0755, true)) {
+                    echo json_encode(['success' => false, 'message' => 'Failed to create the directory']);
+                    exit();
+                }
+            }
+
+            // Generate new file name
+            $random_suffix = uniqid();
+            $target_file = $random_suffix . '_' . substr(basename($certificate_file), 0, 10) . '.' . $extension;
+
+            // Move uploaded file to target location
+            if (move_uploaded_file($certificate_temp, $target_directory . $target_file)) {
+                $target_file = date("Y-m-d") . "/" . $target_file;
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to move the uploaded file']);
+                exit();
+            }
         } else {
             // Keep the existing Certificate file if not updated
             $target_file = $row['user_Certificate'];
         }
 
         // Update the user data in the database
-        $stmt_update = $conn->prepare("UPDATE user_table SET  user_birthdate=?, 
-                                       user_gender=?, user_idcard=?,  
-                                       user_age=?, user_phone=?, 
-                                       user_Certificate=? WHERE user_id=?");
-
-        $stmt_update->bind_param(
-            "ssssssi",
-            $user_birthdate,
-            $user_gender,
-            $user_idcard,
-            $user_age,
-            $user_phone,
-            $target_file,
-            $userId
-        );
-
+        $stmt_update = $conn->prepare("UPDATE user_table SET user_phone=?, user_latitude=?, user_longtitude=?, user_Certificate=? WHERE user_id=?");
+        $stmt_update->bind_param("ssssi", $user_phone, $user_latitude, $user_longtitude, $target_file, $userId);
 
         if ($stmt_update->execute()) {
-            // ทำการ redirect ไปที่ index.php หลังจากอัปเดตข้อมูลสำเร็จ
+            // Redirect to list_hs.php after updating the data successfully
             header("Location: ../../font_end/list_hs.php");
             exit();
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to update cus']);
+            echo json_encode(['success' => false, 'message' => 'Failed to update customer']);
         }
 
         $stmt_update->close();
         $conn->close();
     } else {
-        // ถ้าไม่ใช่เมธอด POST ก็ไม่ต้องทำอะไร
+        // If it's not a POST method, do nothing
         echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     }
 }
+?>
