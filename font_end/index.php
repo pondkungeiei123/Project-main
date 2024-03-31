@@ -1,9 +1,4 @@
 <?php
-session_start();
-if($_SESSION['status_login'] != 'success'){
-    header('Location: ../login/login.php'); // ส่งไปยังหน้าหลัก
-    exit;
-}
 ob_start();
 ?>
 <!-- Your page-specific content -->

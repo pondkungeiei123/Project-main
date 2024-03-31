@@ -207,6 +207,7 @@
                             <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
                             <div id="map"></div>
                         </div>
+                        
                         <div class="col-md-3">
                         <label for="user_latitude">ละติจูด :</label>
                         <input type="text" id="latitudeInput" name="user_latitude">

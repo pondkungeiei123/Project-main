@@ -2,8 +2,10 @@
 
 ob_start();
 ?>
+
 <br>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f6005">
+
 <h2> รายชื่อพนักงาน</h2> 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
