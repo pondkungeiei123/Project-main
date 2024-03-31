@@ -21,20 +21,20 @@
                     สถานะ
                 </a>
             </li> -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="list_profile.php">
-                    จัดการโปรไฟล์ช่าง
-                </a>
-            </li> -->
-
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="list_cus.php">
-                    รายชื่อช่างลูกค้า
-                </a>
-            </li> -->
             <li class="nav-item">
+                <a class="nav-link" href="test.php">
+                    test
+                </a>
+            </li>
+
+           <li class="nav-item">
                 <a class="nav-link" href="map.php">
                     map
+                </a>
+            </li> 
+            <li class="nav-item">
+                <a class="nav-link" href="hairstlye.php">
+                ทรงผม
                 </a>
             </li>
             <li class="nav-item dropdown">

@@ -38,12 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user_email = $_POST['user_email'];
             $user_password = $_POST['user_password'];
             $user_phone = $_POST['user_phone'];
-            $user_latitude = $_POST['user_latitude'];
-            $user_longtitude = $_POST['user_longtitude'];
+
+            // ตรวจสอบว่ามีข้อมูล user_longitude และ user_latitude ที่ถูกส่งมาหรือไม่
+            $user_latitude = isset($_POST['user_latitude']) ? $_POST['user_latitude'] : 0.0;
+            $user_longitude = isset($_POST['user_longitude']) ? $_POST['user_longitude'] : 0.0;
 
             // SQL สำหรับเพิ่มข้อมูล
-            $sql = "INSERT INTO user_table (user_name, user_lastname, user_idcard, user_email, user_password, user_phone,user_latitude, user_longtitude, user_Certificate)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO user_table (user_name, user_lastname, user_idcard, user_email, user_password, user_phone, user_latitude, user_longitude, user_Certificate)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // เตรียมคำสั่ง SQL
             $stmt = $conn->prepare($sql);
@@ -58,27 +60,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $user_password,
                 $user_phone,
                 $user_latitude,
-                $user_longtitude,
+                $user_longitude,
                 $target_file
-                
             );
 
             // ทำการ execute คำสั่ง SQL
             if ($stmt->execute()) {
-                $response = array("success" => true);
+                $response = array("success" => true, "message" => "บันทึกข้อมูลสำเร็จ");
             } else {
-                $response = array("success" => false, "message" => $conn->error);
+                $response = array("success" => false, "message" => "เกิดข้อผิดพลาดในการบันทึกข้อมูล: " . $conn->error);
             }
-        
+
             // Close statement
             $stmt->close();
         } else {
-            $response = array("success" => false, "message" => "Invalid request method");
+            $response = array("success" => false, "message" => "Failed to move uploaded file");
         }
+    } else {
+        $response = array("success" => false, "message" => "No file uploaded");
     }
-}        
+} else {
+    $response = array("success" => false, "message" => "Invalid request method");
+}
+
 // ปิดการเชื่อมต่อฐานข้อมูล
 $conn->close();
+
+// ส่งผลลัพธ์ในรูปแบบ JSON
 header('Content-Type: application/json');
 echo json_encode($response);
 ?>

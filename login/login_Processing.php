@@ -1,7 +1,7 @@
 <?php
 // include config file
 include '../config.php';
-
+session_start();
 // ตรวจสอบการลงชื่อเข้าใช้งานและประมวลผลข้อมูลต่าง ๆ
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ตรวจสอบการลงชื่อเข้าใช้งาน
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $row = $result->fetch_assoc();
         $hashed_password = password_hash($password,PASSWORD_DEFAULT);
         if (password_verify($password, $hashed_password)) {
-            session_start();
+            $_SESSION['ad_name'] = $row['ad_name'];
             $_SESSION['status_login'] = 'success';
             header('Location: ../font_end/index.php'); // ส่งไปยังหน้าหลัก
             exit;

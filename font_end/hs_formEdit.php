@@ -66,26 +66,26 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_latitude">ละติจูด:</label>
-                                <input type="text" class="form-control" id="user_latitude" name="user_latitude" required>
+                                <input type="text" class="form-control" id="user_latitude" name="user_latitude" value="<?= isset($userData['user_latitude']) ? $userData['user_latitude'] : ''; ?>" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_longtitude">ลองจิจูด:</label>
-                                <input type="text" class="form-control" id="user_longtitude" name="user_longtitude" required>
+                                <label for="user_longitude">ลองจิจูด:</label>
+                                <input type="text" class="form-control" id="user_longitude" name="user_longitude" value="<?= isset($userData['user_longitude']) ? $userData['user_longitude'] : ''; ?>" required>
                             </div>
                         </div>
-                    </div>
+
                         <div class=" col-md-12 ">
                             <div class="form-group">
                                 <label for='user_Certificate'>ใบเซอร์:</label>
                                 <?php
-                                echo "<img src='../asset/Certificate/".$userData['user_Certificate']."' style='width:400px;heigh:400px;'>";
+                                echo "<img src='../asset/Certificate/" . $userData['user_Certificate'] . "' style='width:400px;heigh:400px;'>";
                                 ?>
-                                
+
                             </div>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-primary">ยืนยันการเเก้ไข</button>
                     </div>
                 </form>

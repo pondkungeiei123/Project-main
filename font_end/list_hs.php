@@ -1,8 +1,6 @@
-<?php
-ob_start();
-?>
-<!-- Your page-specific content -->
+<?php ob_start(); ?>
 <br>
+
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f6005">
     <h2> รายชื่อช่างตัดผม</h2>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -20,6 +18,8 @@ ob_start();
         <div class="col-md-12">
             <br>
             <h3> </h3>
+
+
             <table class="table table-striped table-hover table-responsive table-bordered">
                 <thead>
                     <tr>
@@ -67,6 +67,10 @@ ob_start();
             </div>
             <div class="modal-body " style="max-height: 5000px; overflow-y: auto;">
                 <form id="resumeForm" action="/black_end/hs/insertProcess.php" method="post" enctype="multipart/form-data">
+                    <!-- เพิ่ม input fields สำหรับ latitude และ longitude -->
+                    <input type="hidden" id="latitudeInput" name="user_latitude">
+                    <input type="hidden" id="longitudeInput" name="user_longitude">
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -100,12 +104,6 @@ ob_start();
                             </div>
                         </div>
 
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="user_address">ที่อยู่ปัจจุบัน:</label>
-                                <textarea id="user_address" class="form-control" name="user_address" rows="3" required></textarea>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_phone">เบอร์ติดต่อ:</label>
@@ -119,70 +117,205 @@ ob_start();
                                 <input type="file" class="form-control" id="user_Certificate" name="user_Certificate" accept="image/*">
                             </div>
                         </div>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d491062.2582593816!2d103.47779549053939!3d15.939224907901758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3117e5d2164cb387%3A0x102b54113604a50!2z4Lij4LmJ4Lit4Lii4LmA4Lit4LmH4LiU!5e0!3m2!1sth!2sth!4v1711518132877!5m2!1sth!2sth" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user_namelocation">ชื่อสถานที่:</label>
-                                <input type="text" class="form-control" id="user_namelocation" name="user_namelocation" required>
-                            </div>
-                        </div>
-                        <!-- <div id="map" style="height: 400px; width: 100%;"></div> ปรับขนาดแผนที่ -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user_latitude">ละติจูด:</label>
-                                <input type="text" class="form-control" id="user_latitude" name="user_latitude" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user_longtitude">ลองจิจูด:</label>
-                                <input type="text" class="form-control" id="user_longtitude" name="user_longtitude" required>
-                            </div>
-                        </div>
-                    </div>
 
                 </form>
                 </form>
             </div>
-            <div class="card-footer d-flex justify-content-end">
-                <button type="button" class="btn btn-success" onclick="submitForm()">ส่งใบสมัคร</button>
-            </div>
+            <title>Places Search Box</title>
+            <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+            <style>
+                #map {
+                    height: 30vh;
+                }
+
+                html,
+                body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                #description {
+                    font-family: Roboto;
+                    font-size: 15px;
+                    font-weight: 300;
+                }
+
+                #infowindow-content .title {
+                    font-weight: bold;
+                }
+
+                #infowindow-content {
+                    display: none;
+                }
+
+                #map #infowindow-content {
+                    display: inline;
+                }
+
+                .pac-card {
+                    background-color: #fff;
+                    border: 0;
+                    border-radius: 2px;
+                    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+                    margin: 10px;
+                    padding: 0 0.5em;
+                    font: 400 18px Roboto, Arial, sans-serif;
+                    overflow: hidden;
+                    font-family: Roboto;
+                    padding: 0;
+                }
+
+                #pac-container {
+                    padding-bottom: 12px;
+                    margin-right: 12px;
+                }
+
+                .pac-controls {
+                    display: inline-block;
+                    padding: 5px 11px;
+                }
+
+                .pac-controls label {
+                    font-family: Roboto;
+                    font-size: 13px;
+                    font-weight: 300;
+                }
+
+                #pac-input {
+                    background-color: #fff;
+                    font-family: Roboto;
+                    font-size: 15px;
+                    font-weight: 300;
+                    margin-left: 12px;
+                    padding: 0 11px 0 13px;
+                    text-overflow: ellipsis;
+                    width: 400px;
+                }
+
+                #pac-input:focus {
+                    border-color: #4d90fe;
+                }
+
+                #title {
+                    color: #fff;
+                    background-color: #4d90fe;
+                    font-size: 25px;
+                    font-weight: 500;
+                    padding: 6px 12px;
+                }
+
+                #target {
+                    width: 345px;
+                }
+            </style>
+            </head>
+
+            <body>
+                <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
+                <div id="map"></div>
+                <br>
+                <input id="latitudeInput" type="text" placeholder="Latitude" name="user_latitude" readonly />
+                <input id="longitudeInput" type="text" placeholder="Longitude" name="user_longitude" readonly />
+
+                <button onclick="getLocation()">ปักหมุด</button>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDELcj3pYg5wJLF_spRgzdz8EAjY-v85QY&callback=initAutocomplete&libraries=places&v=weekly" defer></script>
+                <script>
+                    let map;
+                    let marker;
+
+                    function initAutocomplete() {
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: {
+                                lat: -33.8688,
+                                lng: 151.2195
+                            },
+                            zoom: 13,
+                            mapTypeId: "roadmap",
+                        });
+                        const input = document.getElementById("pac-input");
+                        const searchBox = new google.maps.places.SearchBox(input);
+
+                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                        map.addListener("bounds_changed", () => {
+                            searchBox.setBounds(map.getBounds());
+                        });
+
+                        searchBox.addListener("places_changed", () => {
+                            const places = searchBox.getPlaces();
+
+                            if (places.length == 0) {
+                                return;
+                            }
+
+                            // Remove previous marker, if any
+                            if (marker) {
+                                marker.setMap(null);
+                            }
+
+                            const bounds = new google.maps.LatLngBounds();
+
+                            places.forEach((place) => {
+                                if (!place.geometry || !place.geometry.location) {
+                                    console.log("Returned place contains no geometry");
+                                    return;
+                                }
+
+                                marker = new google.maps.Marker({
+                                    map,
+                                    title: place.name,
+                                    position: place.geometry.location,
+                                    draggable: true, // Make the marker draggable
+                                });
+
+                                google.maps.event.addListener(marker, "dragend", function() {
+                                    document.getElementById("latitudeInput").value =
+                                        marker.getPosition().lat();
+                                    document.getElementById("longitudeInput").value =
+                                        marker.getPosition().lng();
+                                });
+
+                                google.maps.event.addListener(marker, "click", function() {
+                                    document.getElementById("latitudeInput").value =
+                                        marker.getPosition().lat();
+                                    document.getElementById("longitudeInput").value =
+                                        marker.getPosition().lng();
+                                });
+
+                                if (place.geometry.viewport) {
+                                    bounds.union(place.geometry.viewport);
+                                } else {
+                                    bounds.extend(place.geometry.location);
+                                }
+                            });
+                            map.fitBounds(bounds);
+                        });
+                    }
+
+                    window.initAutocomplete = initAutocomplete;
+
+                    function getLocation() {
+                        if (marker) {
+                            document.getElementById("latitudeInput").value =
+                                marker.getPosition().lat();
+                            document.getElementById("longitudeInput").value =
+                                marker.getPosition().lng();
+                        } else {
+                            alert("No marker available.");
+                        }
+                    }
+                </script>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <button type="button" class="btn btn-success" onclick="submitForm()">ส่งใบสมัคร</button>
         </div>
     </div>
+</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!-- Include SweetAlert2 library -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-<script>
-    var map;
-    var marker;
-
-    function initMap() {
-        var defaultLocation = {lat: 13.7563, lng: 100.5018}; // ตำแหน่งเริ่มต้น (กรุงเทพมหานคร)
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: defaultLocation,
-            zoom: 13
-        });
-
-        marker = new google.maps.Marker({
-            position: defaultLocation,
-            map: map,
-            draggable: true
-        });
-
-        google.maps.event.addListener(marker, 'dragend', function(event) {
-            document.getElementById('user_latitude').value = event.latLng.lat();
-            document.getElementById('user_longitude').value = event.latLng.lng();
-        });
-    }
-
-    // Function to handle the form submission for adding a new user
-    function submitForm() {
-        // ส่งข้อมูลฟอร์มผ่าน AJAX
-    }
-</script>
 <script>
     // Function to handle the confirmation dialog for deletion
     function confirmDeletion(id) {
@@ -228,44 +361,44 @@ ob_start();
 
     // Function to handle the form submission for adding a new user
     function submitForm() {
-    var formData = new FormData($('#resumeForm')[0]);
+        var formData = new FormData($('#resumeForm')[0]);
 
-    $.ajax({
-        method: 'POST',
-        url: "http://localhost/Project-main/black_end/hs/insertProcess.php",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(result) {
-            console.log(result);  // 
-            if (result.success === true) {
-                Swal.fire({
-                    title: "เพิ่มสำเร็จ",
-                    text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
-                    icon: "success"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload();
-                    }
-                });
-            } else {
-                Swal.fire({
-                    title: "เพิ่มไม่สำเร็จ",
-                    text: "เพิ่มผู้ใช้ไม่เรียบร้อยแล้ว: " + result.message,
-                    icon: "error"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload();
-                    };
-                });
+        $.ajax({
+            method: 'POST',
+            url: "http://localhost/Project-main/black_end/hs/insertProcess.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(result) {
+                console.log(result); // 
+                if (result.success === true) {
+                    Swal.fire({
+                        title: "เพิ่มสำเร็จ",
+                        text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "เพิ่มไม่สำเร็จ",
+                        text: "เพิ่มผู้ใช้ไม่เรียบร้อยแล้ว: " + result.message,
+                        icon: "error"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        };
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Ajax request failed:", status, error);
+                console.log(xhr.responseText);
             }
-        },
-        error: function(xhr, status, error) {
-            console.error("Ajax request failed:", status, error);
-            console.log(xhr.responseText);
-        }
-    });
-}
+        });
+    }
 </script>
 
 <!-- ... -->
