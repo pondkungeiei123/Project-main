@@ -21,7 +21,7 @@
                     สถานะ
                 </a>
             </li> -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="test.php">
                     test
                 </a>
@@ -31,7 +31,7 @@
                 <a class="nav-link" href="map.php">
                     map
                 </a>
-            </li> 
+            </li>  -->
             <li class="nav-item">
                 <a class="nav-link" href="hairstlye.php">
                 ทรงผม
