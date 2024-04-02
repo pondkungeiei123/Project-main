@@ -1,3 +1,7 @@
+<?php
+
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,3 +65,7 @@
 </body>
 
 </html>
+<?php
+$content = ob_get_clean();
+include '../template/masterblack.php';
+?>

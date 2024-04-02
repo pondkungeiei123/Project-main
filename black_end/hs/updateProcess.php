@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Update user data based on the form inputs
         $user_phone = $_POST['user_phone'];
         $user_latitude = $_POST['user_latitude'];
-        $user_longtitude = $_POST['user_longtitude'];
+        $user_longitude = $_POST['user_longitude'];
 
         // Check if the Certificate file is being updated
         if (isset($_FILES['user_Certificate']) && $_FILES['user_Certificate']['size'] > 0) {
@@ -54,8 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Update the user data in the database
-        $stmt_update = $conn->prepare("UPDATE user_table SET user_phone=?, user_latitude=?, user_longtitude=?, user_Certificate=? WHERE user_id=?");
-        $stmt_update->bind_param("ssssi", $user_phone, $user_latitude, $user_longtitude, $target_file, $userId);
+        $stmt_update = $conn->prepare("UPDATE user_table SET user_phone=?, user_latitude=?, user_longitude=?, user_Certificate=? WHERE user_id=?");
+        $stmt_update->bind_param("ssssi", $user_phone, $user_latitude, $user_longitude, $target_file, $userId);
 
         if ($stmt_update->execute()) {
             // Redirect to list_hs.php after updating the data successfully

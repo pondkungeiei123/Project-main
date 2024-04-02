@@ -5,25 +5,25 @@ if ($_SESSION['status_login'] != 'success') {
   exit;
 }
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f60;">
-  <a class="navbar-brand" href="#">หน้าจัดการระบบ</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <i class="fa-solid fa-right-to-bracket"></i>
-      <?php
-
-      if (isset($_SESSION['ad_name'])) {
-        echo '<span class="navbar-text mr-3" style="font-size: 18px; color: #333333;"> :' . $_SESSION['ad_name'] . '</span>';
-        echo '<a href="../login/logout.php" class="navbar-text mr-3" style="font-size: 14px; color: #333333;">Logout</a>';
-      }
-      ?>
+      <li class="fa-solid fa-right-to-bracket">
+        <?php
+        if (isset($_SESSION['ad_name'])) {
+          echo '<span class="navbar-text mr-3" style="font-size: 18px; color: #333333;"> :' . $_SESSION['ad_name'] . '</span>';
+        }
+        ?>
       </li>
     </ul>
   </div>
+</nav>
+
 </nav>
 <style>
   #map {
@@ -32,9 +32,11 @@ if ($_SESSION['status_login'] != 'success') {
 
   html,
   body {
+    background-color: fe9f6005;
     height: 100%;
     margin: 0;
     padding: 0;
+
   }
 
   #description {

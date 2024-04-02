@@ -207,7 +207,10 @@
                             <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
                             <div id="map"></div>
                         </div>
-                        
+                        <div class="col-md-3">
+                        <label for="user_namelocation">ชื่อสถานที่ :</label>
+                        <input type="text" id="namelocation" name="user_namelocation">
+                        </div>
                         <div class="col-md-3">
                         <label for="user_latitude">ละติจูด :</label>
                         <input type="text" id="latitudeInput" name="user_latitude">
@@ -257,14 +260,14 @@
                     },
                     dataType: "json",
                     success: function(result) {
-                        Swal.fire('Deleted!', 'Your data has been deleted.', 'success').then((result) => {
+                        Swal.fire('ลบข้อสำเร็จ!', 'ข้อมูลถูกลบแล้ว', 'success').then((result) => {
                             if (result.isConfirmed) {
                                 location.reload();
                             }
                         });
                     },
                     error: function(xhr, status, error) {
-                        Swal.fire('Error', 'An error occurred while deleting data.', 'error');
+                        Swal.fire('ไม่สามารถลบได้', 'เกิดข้อผิดพลาดขณะลบข้อมูล.', 'error');
                         console.error("Ajax request failed:", status, error);
                         console.log(xhr.responseText);
                     }
@@ -332,30 +335,29 @@
 
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-        map.addListener("bounds_changed", () => {
-            searchBox.setBounds(map.getBounds());
-        });
-
         searchBox.addListener("places_changed", () => {
-            const places = searchBox.getPlaces();
-            if (places.length == 0) {
-                return;
-            }
+    const places = searchBox.getPlaces();
+    if (places.length == 0) {
+        return;
+    }
 
-            const bounds = new google.maps.LatLngBounds();
+    const bounds = new google.maps.LatLngBounds();
 
-            places.forEach((place) => {
-                if (!place.geometry || !place.geometry.location) {
-                    console.log("Returned place contains no geometry");
-                    return;
-                }
+    places.forEach((place) => {
+        if (!place.geometry || !place.geometry.location) {
+            console.log("Returned place contains no geometry");
+            return;
+        }
 
-                marker = new google.maps.Marker({
-                    map: map,
-                    title: place.name,
-                    position: place.geometry.location,
-                    draggable: true, // Make the marker draggable
-                });
+        // Set the value of the input field with id "namelocation" to the name of the place
+        $("#namelocation").val(place.name);
+
+        marker = new google.maps.Marker({
+            map: map,
+            title: place.name,
+            position: place.geometry.location,
+            draggable: true, // Make the marker draggable
+        });
 
                 google.maps.event.addListener(marker, "dragend", function() {
                     $("#latitudeInput").val(marker.getPosition().lat());

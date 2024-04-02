@@ -38,21 +38,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user_email = $_POST['user_email'];
             $user_password = $_POST['user_password'];
             $user_phone = $_POST['user_phone'];
+            $user_namelocation = $_POST['user_namelocation'];
 
             // ตรวจสอบว่ามีข้อมูล user_longitude และ user_latitude ที่ถูกส่งมาหรือไม่
             $user_latitude = isset($_POST['user_latitude']) ? $_POST['user_latitude'] : 0.0;
             $user_longitude = isset($_POST['user_longitude']) ? $_POST['user_longitude'] : 0.0;
 
             // SQL สำหรับเพิ่มข้อมูล
-            $sql = "INSERT INTO user_table (user_name, user_lastname, user_idcard, user_email, user_password, user_phone, user_latitude, user_longitude, user_Certificate)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+           $sql = "INSERT INTO user_table (user_name, user_lastname, user_idcard, user_email, user_password, user_phone, user_latitude, user_longitude, user_Certificate, user_namelocation)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             // เตรียมคำสั่ง SQL
             $stmt = $conn->prepare($sql);
 
             // ผูกค่าพารามิเตอร์
             $stmt->bind_param(
-                "sssssssss",
+                "ssssssssss",
                 $user_name,
                 $user_lastname,
                 $user_idcard,
@@ -61,7 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $user_phone,
                 $user_latitude,
                 $user_longitude,
-                $target_file
+                $target_file,
+                $user_namelocation
             );
 
             // ทำการ execute คำสั่ง SQL

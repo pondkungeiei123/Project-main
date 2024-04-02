@@ -1,10 +1,15 @@
+<?php
+
+ob_start();
+?>
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User</title>
+    <title>แก้ไขข้อมูล</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
@@ -36,19 +41,19 @@
                         <div class=" col-md-6 ">
                             <div class="form-group">
                                 <label for="user_name">ชื่อ:</label>
-                                <input type="text" class="form-control" name="user_name" value="<?= $userData['user_name']; ?>" required disabled>
+                                <input type="text" class="form-control" name="user_name" value="<?= $userData['user_name']; ?>" required readonly>
                             </div>
                         </div>
                         <div class=" col-md-6 ">
                             <div class="form-group">
                                 <label for="user_lastname">นามสกุล:</label>
-                                <input type="text" class="form-control" name="user_lastname" value="<?= $userData['user_lastname']; ?>" required disabled>
+                                <input type="text" class="form-control" name="user_lastname" value="<?= $userData['user_lastname']; ?>" required readonly>
                             </div>
                         </div>
                         <div class=" col-md-6 ">
                             <div class="form-group">
                                 <label for="user_email">Email:</label>
-                                <input type="email" class="form-control" name="user_email" value="<?= $userData['user_email']; ?>" required disabled>
+                                <input type="email" class="form-control" name="user_email" value="<?= $userData['user_email']; ?>" required readonly>
                             </div>
                         </div>
                         <div class=" col-md-6 ">
@@ -60,19 +65,25 @@
                         <div class=" col-md-6 ">
                             <div class="form-group">
                                 <label for="user_phone">เบอร์โทรศัพท์:</label>
-                                <input type="phone" class="form-control" name="user_phone" value="<?= $userData['user_phone']; ?>" required>
+                                <input type="phone" class="form-control" name="user_phone" value="<?= $userData['user_phone']; ?>" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_latitude">ละติจูด:</label>
-                                <input type="text" class="form-control" id="user_latitude" name="user_latitude" value="<?= isset($userData['user_latitude']) ? $userData['user_latitude'] : ''; ?>" required>
+                                <label for="user_namelocation">ชื่อสถานที่:</label>
+                                <input type="text" class="form-control" id="user_namelocation" name="user_namelocation" value="<?= isset($userData['user_namelocation']) ? $userData['user_namelocation'] : ''; ?>" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user_longitude">ลองจิจูด:</label>
-                                <input type="text" class="form-control" id="user_longitude" name="user_longitude" value="<?= isset($userData['user_longitude']) ? $userData['user_longitude'] : ''; ?>" required>
+                                <input type="text" class="form-control" id="user_longitude" name="user_longitude" value="<?= isset($userData['user_longitude']) ? $userData['user_longitude'] : ''; ?>" required readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user_longitude">ลองจิจูด:</label>
+                                <input type="text" class="form-control" id="user_longitude" name="user_longitude" value="<?= isset($userData['user_longitude']) ? $userData['user_longitude'] : ''; ?>" required readonly>
                             </div>
                         </div>
 
@@ -86,11 +97,32 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">ยืนยันการเเก้ไข</button>
-                    </div>
+                        <button type="button" class="btn btn-primary" id="submitBtn">ยืนยันการแก้ไข</button>
+
                 </form>
 
-        <?php
+
+    </div>
+    <script>
+        // When the submit button is clicked
+        document.getElementById('submitBtn').addEventListener('click', function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+            // Show the SweetAlert2 confirmation
+            Swal.fire({
+                icon: 'success',
+                title: 'การแก้ไขเสร็จสมบูรณ์',
+                showConfirmButton: false,
+                timer: 1500 // Close after 1.5 seconds
+            }).then((result) => {
+                // If the user clicks on "OK", submit the form
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    document.querySelector('form').submit();
+                }
+            });
+        });
+    </script>
+<?php
             } else {
                 echo "<p>User not found</p>";
             }
@@ -101,10 +133,12 @@
         } else {
             echo "<p>Invalid user ID</p>";
         }
-        ?>
-
-    </div>
+?>
 
 </body>
 
 </html>
+<?php
+$content = ob_get_clean();
+include '../template/masterblack.php';
+?>
