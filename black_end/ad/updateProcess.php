@@ -6,9 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $adName = $_POST['ad_name'];
     $adLastname = $_POST['ad_lastname'];
     $adEmail = $_POST['ad_email'];
-    $adPassword = $_POST['ad_password'];
-
-
+    $adPassword = password_hash($_POST["ad_password"], PASSWORD_DEFAULT);
     // ตรวจสอบว่ามีการอัปเดตข้อมูลในฐานข้อมูลหรือไม่
     $stmt = $conn->prepare("UPDATE admin_table SET ad_name = ?, ad_lastname = ?, ad_email = ?, ad_password = ? WHERE ad_id = ?");
     $stmt->bind_param("ssssi", $adName, $adLastname, $adEmail, $adPassword,  $adId);

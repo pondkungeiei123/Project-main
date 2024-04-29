@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 import 'package:finalprojectbarber/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // ฟังก์ชันสำหรับส่งคำขอล็อกอินไปยัง PHP API
  Future<void> loginUser(BuildContext context) async {
-  final url = 'http://127.0.0.1/user/login.php';
+  final url = 'http://192.168.1.7/user/login.php';
 
   try {
     print('Sent data: ${{

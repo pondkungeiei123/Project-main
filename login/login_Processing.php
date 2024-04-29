@@ -9,21 +9,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     // ค้นหาผู้ใช้ในฐานข้อมูล
-    $sql = "SELECT * FROM admin_table WHERE ad_email = '$ad_email'";
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM admin_table WHERE ad_email = ?";
+    $stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $ad_email);
+$stmt->execute();
+$result = $stmt->get_result();
+    
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $hashed_password = password_hash($password,PASSWORD_DEFAULT);
-        if (password_verify($password, $hashed_password)) {
+        $ad_password = $row['ad_password'];
+        if (password_verify($password, $ad_password)) {
             $_SESSION['ad_name'] = $row['ad_name'];
+            $_SESSION['ad_id'] = $row['ad_id'];
             $_SESSION['status_login'] = 'success';
             header('Location: ../font_end/index.php'); // ส่งไปยังหน้าหลัก
             exit;
         } else {
-            echo $row['ad_password'];
+            header("Location:./login.php");
         }
     } else {
-        echo 'ไม่พบผู็ใช้';
-    }
+        header("Location:./login.php");
+    } 
 }
-?>
+?>       

@@ -1,25 +1,23 @@
 <?php
 include "../../config.php";
-
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = $_POST['ad_id'];
-    
-    // ลบข้อมูลผู้ใช้
-    $stmt = $conn->prepare("DELETE FROM admin_table WHERE ad_id = ?");
-    $stmt->bind_param("i", $userId);
-
-    if ($stmt->execute()) {
-        $response = array("success" => true);
-        // ทำการ redirect ไปที่ index.php หลังจากลบข้อมูลสำเร็จ
+    if ($userId != $_SESSION['ad_id']) {
+        $stmt = $conn->prepare("DELETE FROM admin_table WHERE ad_id = ?");
+        $stmt->bind_param("i", $userId);
+        if ($stmt->execute()) {
+            $response = array("success" => true);
+        } else {
+            echo "<p>Failed to delete user</p>";
+        }
+        $stmt->close();
     } else {
-        echo "<p>Failed to delete user</p>";
+        $response = array("success" => false);
     }
-
-    $stmt->close();
 } else {
     echo "<p>Invalid request</p>";
 }
 $conn->close();
 header('Content-Type: application/json');
 echo json_encode($response);
-?>

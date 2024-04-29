@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header("Access-Control-Allow-Headers: X-Requested-With, content-type, access-control-allow-origin, access-control-allow-methods, access-control-allow-headers");
 
 require "connect.php";
 
@@ -11,22 +11,21 @@ if (!$con) {
 }
 
 // Ensure that the variables are defined with default values
-$user_email = isset($_POST['email']) ? $_POST['email'] : '';
-$user_password = isset($_POST['password']) ? $_POST['password'] : '';
+$cus_email = isset($_POST['email']) ? $_POST['email'] : '';
+$cus_password = isset($_POST['password']) ? md5($_POST['password']) : '';
 
-
-
-$sql = "SELECT * FROM users WHERE user_email = '" . $user_email . "'";
+$sql = "SELECT * FROM customer_table WHERE cus_email = '" . $cus_email . "'";
 $result = mysqli_query($con, $sql);
 
 if ($result) {
     $resultObj = mysqli_fetch_assoc($result);
-    if ($resultObj && password_verify($user_password,$resultObj['user_password'])) {
+
+    if ($resultObj && $cus_password === $resultObj['cus_password']) {
         echo json_encode(array(
             "result" => 1,
             "message" => "Success",
             "data" => array(
-                'user_id' => $resultObj['user_id'],
+                'cus_id' => $resultObj['cus_id']
             )
         ));
     } else {

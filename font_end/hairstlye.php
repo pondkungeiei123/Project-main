@@ -4,7 +4,7 @@ ob_start();
 ?>
 <br>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f6005">
-<h2> รายชื่อพนักงาน</h2> 
+<h2> ทรงผม</h2> 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -67,7 +67,7 @@ ob_start();
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <h5 class="modal-title" id="addUserModalLabel">เพิ่มทรงผม</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
