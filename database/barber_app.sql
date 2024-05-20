@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_table`
+-- Table structure for table `admin`
 --
 
-CREATE TABLE `admin_table` (
+CREATE TABLE `admin` (
   `ad_id` int(11) NOT NULL,
   `ad_name` varchar(50) DEFAULT NULL,
   `ad_lastname` varchar(50) DEFAULT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE `admin_table` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admin_table`
+-- Dumping data for table `admin`
 --
 
-INSERT INTO `admin_table` (`ad_id`, `ad_name`, `ad_lastname`, `ad_email`, `ad_password`) VALUES
+INSERT INTO `admin` (`ad_id`, `ad_name`, `ad_lastname`, `ad_email`, `ad_password`) VALUES
 (1, 'admin', 'admin', 'admin1234', '$2y$10$yeMyVmq/WLAWx'),
 (2, 'สมชาย', 'สองใจ', 'kanatakung123@gmail.com', '$2y$10$A3h1uPgCy9XSP');
 
@@ -254,9 +254,9 @@ INSERT INTO `user_table` (`user_id`, `user_name`, `user_lastname`, `user_phone`,
 --
 
 --
--- Indexes for table `admin_table`
+-- Indexes for table `admin`
 --
-ALTER TABLE `admin_table`
+ALTER TABLE `admin`
   ADD PRIMARY KEY (`ad_id`),
   ADD UNIQUE KEY `ad_email` (`ad_email`);
 
@@ -315,9 +315,9 @@ ALTER TABLE `user_table`
 --
 
 --
--- AUTO_INCREMENT for table `admin_table`
+-- AUTO_INCREMENT for table `admin`
 --
-ALTER TABLE `admin_table`
+ALTER TABLE `admin`
   MODIFY `ad_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --

@@ -5,9 +5,9 @@ include "../../config.php";
 // ตรวจสอบว่ามีข้อมูลที่รับมาจากหน้า list_hs.php หรือไม่
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // ตรวจสอบว่ามีไฟล์ Certificate ถูกอัปโหลดมาหรือไม่
-    if (isset($_FILES['user_Certificate'])) {
-        $certificate_file = $_FILES['user_Certificate']['name'];
-        $certificate_temp = $_FILES['user_Certificate']['tmp_name'];
+    if (isset($_FILES['ba_certificate'])) {
+        $certificate_file = $_FILES['ba_certificate']['name'];
+        $certificate_temp = $_FILES['ba_certificate']['tmp_name'];
         $file_info = pathinfo($certificate_file);
         $extension = $file_info['extension'];
 
@@ -32,20 +32,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $target_file = date("Y-m-d") . "/" . $target_file;
 
             // รับข้อมูลจากฟอร์ม
-            $user_name = $_POST['user_name'];
-            $user_lastname = $_POST['user_lastname'];
-            $user_idcard = $_POST['user_idcard'];
-            $user_email = $_POST['user_email'];
-            $user_password = $_POST['user_password'];
-            $user_phone = $_POST['user_phone'];
-            $user_namelocation = $_POST['user_namelocation'];
+            $ba_name = $_POST['ba_name'];
+            $ba_lastname = $_POST['ba_lastname'];
+            $ba_idcard = $_POST['ba_idcard'];
+            $ba_email = $_POST['ba_email'];
+            $ba_password = $_POST['ba_password'];
+            $ba_phone = $_POST['ba_phone'];
+            $ba_namelocation = $_POST['ba_namelocation'];
 
-            // ตรวจสอบว่ามีข้อมูล user_longitude และ user_latitude ที่ถูกส่งมาหรือไม่
-            $user_latitude = isset($_POST['user_latitude']) ? $_POST['user_latitude'] : 0.0;
-            $user_longitude = isset($_POST['user_longitude']) ? $_POST['user_longitude'] : 0.0;
+            // ตรวจสอบว่ามีข้อมูล ba_longitude และ ba_latitude ที่ถูกส่งมาหรือไม่
+            $ba_latitude = isset($_POST['ba_latitude']) ? $_POST['ba_latitude'] : 0.0;
+            $ba_longitude = isset($_POST['ba_longitude']) ? $_POST['ba_longitude'] : 0.0;
 
             // SQL สำหรับเพิ่มข้อมูล
-           $sql = "INSERT INTO user_table (user_name, user_lastname, user_idcard, user_email, user_password, user_phone, user_latitude, user_longitude, user_Certificate, user_namelocation)
+           $sql = "INSERT INTO barber (ba_name, ba_lastname, ba_idcard, ba_email, ba_password, ba_phone, ba_latitude, ba_longitude, ba_certificate, ba_namelocation)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             // เตรียมคำสั่ง SQL
             $stmt = $conn->prepare($sql);
@@ -53,16 +53,16 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             // ผูกค่าพารามิเตอร์
             $stmt->bind_param(
                 "ssssssssss",
-                $user_name,
-                $user_lastname,
-                $user_idcard,
-                $user_email,
-                $user_password,
-                $user_phone,
-                $user_latitude,
-                $user_longitude,
+                $ba_name,
+                $ba_lastname,
+                $ba_idcard,
+                $ba_email,
+                $ba_password,
+                $ba_phone,
+                $ba_latitude,
+                $ba_longitude,
                 $target_file,
-                $user_namelocation
+                $ba_namelocation
             );
 
             // ทำการ execute คำสั่ง SQL

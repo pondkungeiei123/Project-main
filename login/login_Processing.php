@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     // ค้นหาผู้ใช้ในฐานข้อมูล
-    $sql = "SELECT * FROM admin_table WHERE ad_email = ?";
+    $sql = "SELECT * FROM admin WHERE ad_email = ?";
     $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $ad_email);
 $stmt->execute();
@@ -25,10 +25,12 @@ $result = $stmt->get_result();
             header('Location: ../font_end/index.php'); // ส่งไปยังหน้าหลัก
             exit;
         } else {
-            header("Location:./login.php");
+            echo "Invalid email or password1.";
+            exit;
         }
     } else {
-        header("Location:./login.php");
-    } 
+        echo "Invalid email or password2.";
+        exit;
+    }
 }
 ?>       

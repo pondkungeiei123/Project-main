@@ -3,25 +3,25 @@
 include "../../config.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userId = $_POST['user_id'];
-    $stmt = $conn->prepare("SELECT * FROM user_table WHERE user_id = ?");
-    $stmt->bind_param("i", $userId);
+    $baId = $_POST['ba_id'];
+    $stmt = $conn->prepare("SELECT * FROM barber WHERE ba_id = ?");
+    $stmt->bind_param("i", $baId);
     $stmt->execute();
     $result = $stmt->get_result();
    
     if ($result->num_rows > 0) {
-        // Fetch the existing user data
+        // Fetch the existing ba data
         $row = $result->fetch_assoc();
 
-        // Update user data based on the form inputs
-        $user_phone = $_POST['user_phone'];
-        $user_latitude = $_POST['user_latitude'];
-        $user_longitude = $_POST['user_longitude'];
+        // Update ba data based on the form inputs
+        $ba_phone = $_POST['ba_phone'];
+        $ba_latitude = $_POST['ba_latitude'];
+        $ba_longitude = $_POST['ba_longitude'];
 
         // Check if the Certificate file is being updated
-        if (isset($_FILES['user_Certificate']) && $_FILES['user_Certificate']['size'] > 0) {
-            $certificate_file = $_FILES['user_Certificate']['name'];
-            $certificate_temp = $_FILES['user_Certificate']['tmp_name'];
+        if (isset($_FILES['ba_certificate']) && $_FILES['ba_certificate']['size'] > 0) {
+            $certificate_file = $_FILES['ba_certificate']['name'];
+            $certificate_temp = $_FILES['ba_certificate']['tmp_name'];
             $file_info = pathinfo($certificate_file);
             $extension = $file_info['extension'];
 
@@ -50,12 +50,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } else {
             // Keep the existing Certificate file if not updated
-            $target_file = $row['user_Certificate'];
+            $target_file = $row['ba_certificate'];
         }
 
-        // Update the user data in the database
-        $stmt_update = $conn->prepare("UPDATE user_table SET user_phone=?, user_latitude=?, user_longitude=?, user_Certificate=? WHERE user_id=?");
-        $stmt_update->bind_param("ssssi", $user_phone, $user_latitude, $user_longitude, $target_file, $userId);
+        // Update the ba data in the database
+        $stmt_update = $conn->prepare("UPDATE barber SET ba_phone=?, ba_latitude=?, ba_longitude=?, ba_certificate=? WHERE ba_id=?");
+        $stmt_update->bind_param("ssssi", $ba_phone, $ba_latitude, $ba_longitude, $target_file, $baId);
 
         if ($stmt_update->execute()) {
             // Redirect to list_hs.php after updating the data successfully

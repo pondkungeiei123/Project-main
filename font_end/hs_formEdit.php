@@ -11,6 +11,15 @@ ob_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แก้ไขข้อมูล</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: #fe9f602e;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,77 +30,77 @@ ob_start();
         <?php
         // ตรวจสอบว่ามีพารามิเตอร์ id ที่ถูกส่งมาหรือไม่
         if (isset($_GET['id'])) {
-            $userId = $_GET['id'];
+            $baId = $_GET['id'];
 
             require_once '../config.php';
 
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
-            $stmt = $conn->prepare("SELECT * FROM user_table WHERE user_id = ?");
-            $stmt->bind_param("i", $userId);
+            $stmt = $conn->prepare("SELECT * FROM barber WHERE ba_id = ?");
+            $stmt->bind_param("i", $baId);
             $stmt->execute();
             $result = $stmt->get_result();
 
             // ตรวจสอบว่ามีข้อมูลหรือไม่
             if ($result->num_rows > 0) {
-                $userData = $result->fetch_assoc();
+                $baData = $result->fetch_assoc();
         ?>
                 <form action="../black_end/hs/updateProcess.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="user_id" value="<?= $userData['user_id']; ?>">
+                    <input type="hidden" name="ba_id" value="<?= $baData['ba_id']; ?>">
                     <div class="row">
                         <div class=" col-md-6 ">
                             <div class="form-group">
-                                <label for="user_name">ชื่อ:</label>
-                                <input type="text" class="form-control" name="user_name" value="<?= $userData['user_name']; ?>" required readonly>
+                                <label for="ba_name">ชื่อ:</label>
+                                <input type="text" class="form-control" name="ba_name" value="<?= $baData['ba_name']; ?>" required readonly>
                             </div>
                         </div>
                         <div class=" col-md-6 ">
                             <div class="form-group">
-                                <label for="user_lastname">นามสกุล:</label>
-                                <input type="text" class="form-control" name="user_lastname" value="<?= $userData['user_lastname']; ?>" required readonly>
+                                <label for="ba_lastname">นามสกุล:</label>
+                                <input type="text" class="form-control" name="ba_lastname" value="<?= $baData['ba_lastname']; ?>" required readonly>
                             </div>
                         </div>
                         <div class=" col-md-6 ">
                             <div class="form-group">
-                                <label for="user_email">Email:</label>
-                                <input type="email" class="form-control" name="user_email" value="<?= $userData['user_email']; ?>" required readonly>
+                                <label for="ba_email">Email:</label>
+                                <input type="email" class="form-control" name="ba_email" value="<?= $baData['ba_email']; ?>" required readonly>
                             </div>
                         </div>
                         <div class=" col-md-6 ">
                             <div class="form-group">
-                                <label for="user_password">Password:</label>
-                                <input type="password" class="form-control" name="user_password" required disabled>
+                                <label for="ba_password">Password:</label>
+                                <input type="password" class="form-control" name="ba_password" required disabled>
                             </div>
                         </div>
                         <div class=" col-md-6 ">
                             <div class="form-group">
-                                <label for="user_phone">เบอร์โทรศัพท์:</label>
-                                <input type="phone" class="form-control" name="user_phone" value="<?= $userData['user_phone']; ?>" required readonly>
+                                <label for="ba_phone">เบอร์โทรศัพท์:</label>
+                                <input type="phone" class="form-control" name="ba_phone" value="<?= $baData['ba_phone']; ?>" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_namelocation">ชื่อสถานที่:</label>
-                                <input type="text" class="form-control" id="user_namelocation" name="user_namelocation" value="<?= isset($userData['user_namelocation']) ? $userData['user_namelocation'] : ''; ?>" required readonly>
+                                <label for="ba_namelocation">ชื่อสถานที่:</label>
+                                <input type="text" class="form-control" id="ba_namelocation" name="ba_namelocation" value="<?= isset($baData['ba_namelocation']) ? $baData['ba_namelocation'] : ''; ?>" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_longitude">ลองจิจูด:</label>
-                                <input type="text" class="form-control" id="user_longitude" name="user_longitude" value="<?= isset($userData['user_longitude']) ? $userData['user_longitude'] : ''; ?>" required readonly>
+                                <label for="ba_longitude">ลองจิจูด:</label>
+                                <input type="text" class="form-control" id="ba_longitude" name="ba_longitude" value="<?= isset($baData['ba_longitude']) ? $baData['ba_longitude'] : ''; ?>" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_longitude">ลองจิจูด:</label>
-                                <input type="text" class="form-control" id="user_longitude" name="user_longitude" value="<?= isset($userData['user_longitude']) ? $userData['user_longitude'] : ''; ?>" required readonly>
+                                <label for="ba_longitude">ลองจิจูด:</label>
+                                <input type="text" class="form-control" id="ba_longitude" name="ba_longitude" value="<?= isset($baData['ba_longitude']) ? $baData['ba_longitude'] : ''; ?>" required readonly>
                             </div>
                         </div>
 
                         <div class=" col-md-12 ">
                             <div class="form-group">
-                                <label for='user_Certificate'>ใบเซอร์:</label>
+                                <label for='ba_certificate'>ใบเซอร์:</label>
                                 <?php
-                                echo "<img src='../asset/Certificate/" . $userData['user_Certificate'] . "' style='width:400px;heigh:400px;'>";
+                                echo "<img src='../asset/Certificate/" . $baData['ba_certificate'] . "' style='width:400px;heigh:400px;'>";
                                 ?>
 
                             </div>
@@ -115,7 +124,7 @@ ob_start();
                 showConfirmButton: false,
                 timer: 1500 // Close after 1.5 seconds
             }).then((result) => {
-                // If the user clicks on "OK", submit the form
+                // If the ba clicks on "OK", submit the form
                 if (result.dismiss === Swal.DismissReason.timer) {
                     document.querySelector('form').submit();
                 }
@@ -131,7 +140,7 @@ ob_start();
             $stmt->close();
             $conn->close();
         } else {
-            echo "<p>Invalid user ID</p>";
+            echo "<p>Invalid ba ID</p>";
         }
 ?>
 

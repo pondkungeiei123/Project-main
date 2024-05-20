@@ -10,6 +10,15 @@ ob_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แก้ไขข้อมูล</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: #fe9f602e;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -25,7 +34,7 @@ ob_start();
             require_once '../config.php';
 
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
-            $stmt = $conn->prepare("SELECT * FROM admin_table WHERE ad_id = ?");
+            $stmt = $conn->prepare("SELECT * FROM admin WHERE ad_id = ?");
             $stmt->bind_param("i", $adId);
             $stmt->execute();
             $result = $stmt->get_result();

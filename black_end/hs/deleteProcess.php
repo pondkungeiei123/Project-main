@@ -2,17 +2,17 @@
 include "../../config.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId = $_POST['user_id'];
+    $baId = $_POST['ba_id'];
     
     // ลบข้อมูลผู้ใช้
-    $stmt = $conn->prepare("DELETE FROM user_table WHERE user_id  = ?");
-    $stmt->bind_param("i", $userId);
+    $stmt = $conn->prepare("DELETE FROM barber WHERE ba_id  = ?");
+    $stmt->bind_param("i", $baId);
 
     if ($stmt->execute()) {
         $response = array("success" => true);
 
     } else {
-        echo "<p>Failed to delete user</p>";
+        echo "<p>Failed to delete ba</p>";
     }
 
     $stmt->close();

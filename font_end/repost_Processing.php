@@ -1,6 +1,6 @@
 <?php
 // connect.php
-include "../../config.php";
+include "../config.php";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -21,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // add additional fields as needed
 
     // Prepare and bind the SQL statement
-    $stmt = $conn->prepare("INSERT INTO admin (ad_name, ad_lastname, ad_email, ad_password) VALUES (?, ?, ?, ?)");
-
+    $sql = "SELECT * FROM booking WHERE bk_startdate = '$date'";
+    $sql = "SELECT * FROM booking WHERE bk_enddate = '$date'";
     if ($stmt) {
         $stmt->bind_param("ssss", $ad_name, $ad_lastname, $ad_email, $ad_password);
 

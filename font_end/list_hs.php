@@ -124,7 +124,7 @@
                 <tbody>
                     <?php
                     require_once '../config.php';
-                    $stmt = $conn->prepare("SELECT * FROM user_table");
+                    $stmt = $conn->prepare("SELECT * FROM barber");
                     $stmt->execute();
                     $resultSet = $stmt->get_result();
                     $data = $resultSet->fetch_all(MYSQLI_ASSOC);
@@ -132,11 +132,11 @@
                     foreach ($data as $k) {
                     ?>
                         <tr>
-                            <td><?= $k['user_id']; ?></td>
-                            <td><?= $k['user_name']; ?></td>
-                            <td><?= $k['user_lastname']; ?></td>
-                            <td><a href="hs_formEdit.php?id=<?= $k['user_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
-                            <td><button type="button" onclick="confirmDeletion('<?= $k['user_id'] ?>')" class="btn btn-danger btn-sm">ลบ</button></td>
+                            <td><?= $k['ba_id']; ?></td>
+                            <td><?= $k['ba_name']; ?></td>
+                            <td><?= $k['ba_lastname']; ?></td>
+                            <td><a href="hs_formEdit.php?id=<?= $k['ba_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
+                            <td><button type="button" onclick="confirmDeletion('<?= $k['ba_id'] ?>')" class="btn btn-danger btn-sm">ลบ</button></td>
                         </tr>
                     <?php
                     }
@@ -161,46 +161,46 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_name">ชื่อ:</label>
-                                <input type="text" class="form-control " id="user_name" name="user_name" required>
+                                <label for="ba_name">ชื่อ:</label>
+                                <input type="text" class="form-control " id="ba_name" name="ba_name" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_lastname">นามสกุล:</label>
-                                <input type="text" class="form-control " id="user_lastname" name="user_lastname" required>
+                                <label for="ba_lastname">นามสกุล:</label>
+                                <input type="text" class="form-control " id="ba_lastname" name="ba_lastname" required>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="user_idcard">หมายเลขบัตรประชาชน:</label>
-                                <input type="text" class="form-control" id="user_idcard" name="user_idcard" required>
+                                <label for="ba_idcard">หมายเลขบัตรประชาชน:</label>
+                                <input type="text" class="form-control" id="ba_idcard" name="ba_idcard" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_email">Email:</label>
-                                <input type="email" class="form-control " id="user_email" name="user_email" required>
+                                <label for="ba_email">Email:</label>
+                                <input type="email" class="form-control " id="ba_email" name="ba_email" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_password">password:</label>
-                                <input type="password" class="form-control " id="user_password" name="user_password" required>
+                                <label for="ba_password">password:</label>
+                                <input type="password" class="form-control " id="ba_password" name="ba_password" required>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_phone">เบอร์ติดต่อ:</label>
-                                <input type="text" class="form-control" id="user_phone" name="user_phone" required>
+                                <label for="ba_phone">เบอร์ติดต่อ:</label>
+                                <input type="text" class="form-control" id="ba_phone" name="ba_phone" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user_Certificate">ส่งใบเซอร์:</label>
-                                <input type="file" class="form-control" id="user_Certificate" name="user_Certificate" accept="image/*">
+                                <label for="ba_certificate">ส่งใบเซอร์:</label>
+                                <input type="file" class="form-control" id="ba_certificate" name="ba_certificate" accept="image/*">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -208,16 +208,16 @@
                             <div id="map"></div>
                         </div>
                         <div class="col-md-3">
-                        <label for="user_namelocation">ชื่อสถานที่ :</label>
-                        <input type="text" id="namelocation" name="user_namelocation">
+                        <label for="ba_namelocation">ชื่อสถานที่ :</label>
+                        <input type="text" id="namelocation" name="ba_namelocation">
                         </div>
                         <div class="col-md-3">
-                        <label for="user_latitude">ละติจูด :</label>
-                        <input type="text" id="latitudeInput" name="user_latitude">
+                        <label for="ba_latitude">ละติจูด :</label>
+                        <input type="text" id="latitudeInput" name="ba_latitude">
                         </div>
                         <div class="col-md-3">
-                        <label for="user_longitude">ลองจิจูด:</label>
-                        <input type="text" id="longitudeInput" name="user_longitude">
+                        <label for="ba_longitude">ลองจิจูด:</label>
+                        <input type="text" id="longitudeInput" name="ba_longitude">
                         </div>
                         <div class="col-md-12">
                             <button type="button" class="btn btn-primary btn-sm mt-2" onclick="getLocation()"> ยืนยันตำแหน่ง</button>
@@ -256,7 +256,7 @@
                     method: 'POST',
                     url: "http://localhost/Project-main/black_end/hs/deleteProcess.php",
                     data: {
-                        user_id: id
+                        ba_id: id
                     },
                     dataType: "json",
                     success: function(result) {
@@ -278,7 +278,7 @@
         });
     }
 
-    // Function to handle the form submission for adding a new user
+    // Function to handle the form submission for adding a new ba
     function submitForm() {
         var formData = new FormData($('#resumeForm')[0]);
 

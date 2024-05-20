@@ -26,12 +26,12 @@
                     test
                 </a>
             </li> -->
-<!-- 
+
            <li class="nav-item">
-                <a class="nav-link" href="map.php">
-                    map
+                <a class="nav-link" href="test.php">
+                test
                 </a>
-            </li>  -->
+            </li> 
             <li class="nav-item">
                 <a class="nav-link" href="hairstlye.php">
                 ทรงผม

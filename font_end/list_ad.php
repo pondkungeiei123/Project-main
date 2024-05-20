@@ -38,7 +38,7 @@ ob_start();
                     <!-- ตรงนี้คือข้อมูลที่ถูกดึงมาแสดงในตาราง -->
                     <?php
                     require_once '../config.php';
-                    $stmt = $conn->prepare("SELECT * FROM admin_table");
+                    $stmt = $conn->prepare("SELECT * FROM admin");
                     $stmt->execute();
                     $resultSet = $stmt->get_result();
                     $data = $resultSet->fetch_all(MYSQLI_ASSOC);
