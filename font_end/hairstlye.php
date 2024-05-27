@@ -3,18 +3,19 @@
 ob_start();
 ?>
 <br>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f6005">
-<h2> ทรงผม</h2> 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">
-                        เพิ่มข้อมูล
-                    </button>
-                </li>
-            </ul>
+<div class="row mt-5">
+    <div class="col-md-12 text-center">
+        <h2> ทรงผม</h2>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-end">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                เพิ่มข้อมูล
+            </button>
         </div>
-    </nav>
+    </div>
 <!-- Your page-specific content -->
 
 <!-- Add a title here -->
@@ -92,12 +93,11 @@ ob_start();
     function confirmDeletion(id) {
         // Use SweetAlert2 to create a confirmation dialog
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You won\'t be able to revert this!',
+            title: 'ต้องการลบจริงมั้ย',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'ตกลง',
+            cancelButtonText: 'ยกเลิก',
         }).then((result) => {
             // If the user clicks "Yes, delete it!"
             if (result.isConfirmed) {
@@ -111,7 +111,7 @@ ob_start();
                     dataType: "json",
                     success: function(result) {
                         // Display a success message to the user
-                        Swal.fire('Deleted!', 'Your data has been deleted.', 'success').then((result) => {
+                        Swal.fire('ลบ!', 'ข้อมูลของคุณถูกลบแล้ว.', 'success').then((result) => {
                             if (result.isConfirmed) {
                                 location.reload();
                             }
@@ -127,7 +127,7 @@ ob_start();
 
             } else {
                 // If the user clicks "Cancel" or closes the dialog
-                Swal.fire('Cancelled', 'Your data is safe :)', 'info');
+                Swal.fire('ยกเลิก', 'ยกเลิกการลบแล้ว', 'info');
             }
         });
     }
@@ -145,8 +145,8 @@ ob_start();
                 console.log(result);
                 if (result.success === true) {
                     Swal.fire({
-                        title: "Success",
-                        text: "User added successfully",
+                        title: "เพิ่ม",
+                        text: "เพิ่มทรงผมสำเร็จแล้ว",
                         icon: "success"
                     }).then((result) => {
                         if (result.isConfirmed) {

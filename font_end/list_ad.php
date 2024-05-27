@@ -114,7 +114,7 @@ ob_start();
                     dataType: "json",
                     success: function(result) {
                         if (result.success == true) {
-                            Swal.fire('Deleted!', 'Your data has been deleted.', 'success').then((result) => {
+                            Swal.fire('ลบ!', 'ข้อมูลของคุณถูกลบแล้ว.', 'success').then((result) => {
                                 if (result.isConfirmed) {
                                     location.reload();
                                 }
@@ -130,7 +130,7 @@ ob_start();
                 });
 
             } else {
-
+                Swal.fire('ยกเลิก', 'ยกเลิกการลบแล้ว', 'info');
             }
         });
     }
@@ -153,7 +153,7 @@ ob_start();
                     console.log(result);
                     if (result.success === true) {
                         Swal.fire({
-                            title: "Success",
+                            title: "เพิ่ม",
                             text: "เพิ่มรายการสำเร็จ",
                             icon: "success"
                         }).then((result) => {

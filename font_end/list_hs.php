@@ -239,11 +239,10 @@
 
     function confirmDeletion(id) {
         Swal.fire({
-            title: 'ต้องการลบหรือไม่!',
-            text: 'คุณต้องการที่จะลบหรือไปไม่!',
+            title: 'ต้องการลบจริงมั้ย?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'ใช่ ต้องการลบ',
+            confirmButtonText: 'ตกลง',
             cancelButtonText: 'ยกเลิก',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -268,7 +267,7 @@
                     }
                 });
             } else {
-                Swal.fire('ยกเลิกสำเร็จ');
+                Swal.fire('ยกเลิก', 'ยกเลิกการลบแล้ว', 'info');
             }
         });
     }
