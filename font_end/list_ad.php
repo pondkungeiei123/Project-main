@@ -3,24 +3,20 @@
 ob_start();
 ?>
 
-<br>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f6005">
 
-    <h2> รายชื่อพนักงาน</h2>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">
-                    เพิ่มข้อมูล
-                </button>
-            </li>
-        </ul>
+<div class="row mt-5">
+    <div class="col-md-12 text-center">
+        <h2> รายชื่อพนักงาน</h2>
     </div>
-</nav>
-<!-- Your page-specific content -->
-
-<!-- Add a title here -->
+</div>
 <div class="container">
+    <div class="row">
+        <div class="col-md-12 text-end">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                เพิ่มข้อมูล
+            </button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12"> <br>
             <h3> </h3>
@@ -30,8 +26,7 @@ ob_start();
                         <th width="5%">ลำดับ</th>
                         <th width="40%">ชื่อ</th>
                         <th width="45%">นามสกุล</th>
-                        <th width="5%">แก้ไข</th>
-                        <th width="5%">ลบ</th>
+                        <th colspan="2">แก้ไข</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,16 +37,16 @@ ob_start();
                     $stmt->execute();
                     $resultSet = $stmt->get_result();
                     $data = $resultSet->fetch_all(MYSQLI_ASSOC);
-
                     foreach ($data as $k) {
                     ?>
-
                         <tr>
                             <td><?= $k['ad_id']; ?></td>
                             <td><?= $k['ad_name']; ?></td>
                             <td><?= $k['ad_lastname']; ?></td>
-                            <td><a href="ad_formEdit.php?id=<?= $k['ad_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
-                            <td><button type="button" onclick="confirmDeletion('<?= $k['ad_id'] ?>')" class="btn btn-danger btn-circle btn-sm">ลบ</>
+                            <td>
+                                <a href="ad_formEdit.php?id=<?= $k['ad_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a>
+                                <!-- <button type="button" onclick="edit('<?= $k['ad_id'] ?>')" class="btn btn-warning btn-sm">แก้ไข</button> -->
+                                <button type="button" onclick="confirmDeletion('<?= $k['ad_id'] ?>')" class="btn btn-danger btn-circle btn-sm">ลบ</button>
                         </tr>
                     <?php
                     }
@@ -63,97 +58,91 @@ ob_start();
         </div>
     </div>
 </div>
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+
+<div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">เพิ่มข้อมูลผู้ดูแลระบบ</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="addUserModal">เพิ่มพนักงาน</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="addUserForm" method="POST">
                     <div class="form-group">
                         <label for="ad_name">ชื่อ:</label>
-                        <input type="text" class="form-control" name="ad_name" required>
+                        <input type="text" class="form-control" id="ad_name" name="ad_name" required>
                     </div>
                     <div class="form-group">
                         <label for="ad_lastname">นามสกุล:</label>
-                        <input type="text" class="form-control" name="ad_lastname" required>
+                        <input type="text" class="form-control" id="ad_lastname" name="ad_lastname" required>
                     </div>
                     <div class="form-group">
                         <label for="ad_email">Email:</label>
-                        <input type="email" class="form-control" name="ad_email" required>
+                        <input type="email" class="form-control" id="ad_email" name="ad_email" required>
                     </div>
                     <div class="form-group">
                         <label for="ad_password">Password:</label>
-                        <input type="password" class="form-control" name="ad_password" required>
+                        <input type="password" class="form-control" id="ad_password" name="ad_password" required>
                     </div>
-
-
-                    <button type="button" class="btn btn-primary" onclick="submitForm()">ส่งข้อมูล </button>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="submitForm()">เพิ่มพนักงาน</button>
             </div>
         </div>
     </div>
 </div>
+
+
 <script>
     function confirmDeletion(id) {
         // Use SweetAlert2 to create a confirmation dialog
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'You won\'t be able to revert this!',
+            title: 'ต้องการลบจริงมั้ย?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'ตกลง',
+            cancelButtonText: 'ยกเลิก',
         }).then((result) => {
-                // If the user clicks "Yes, delete it!"
-                if (result.isConfirmed) {
-                    $.ajax({
-                            method: 'POST',
-                            url: "http://localhost/Project-main/black_end/ad/deleteProcess.php",
-                            // Ensure proper validation on the server for ad_id
-                            data: {
-                                ad_id: id
-                            },
-                            dataType: "json",
-                            success: function(result) {
-                                if (result['success'] == true) {
-                                    Swal.fire('Deleted!', 'Your data has been deleted.', 'success').then((result) => {
-                                        if (result.isConfirmed) {
-                                            location.reload();
-                                        }
-                                    });
-                                } else {
-                                    Swal.fire('Error', 'ไม่สามารถลบได้เนื่องจากมีการใช้งานอยู่', 'error').then((result) => {
-                                            if (result.isConfirmed) {
-                                                location.reload();
-                                            }
-                                        });
-                                    }
-                                    // Display a success message to the user
-
-                                },
-                                error: function(xhr, status, error) {
-                                    // Display a user-friendly error message
-                                    Swal.fire('Error', 'An error occurred while deleting data.', 'error');
-                                    console.error("Ajax request failed:", status, error);
-                                    console.log(xhr.responseText); // Log the entire response for debugging
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'POST',
+                    url: "http://localhost/Project-main/black_end/ad/deleteProcess.php",
+                    data: {
+                        ad_id: id
+                    },
+                    dataType: "json",
+                    success: function(result) {
+                        if (result.success == true) {
+                            Swal.fire('Deleted!', 'Your data has been deleted.', 'success').then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
                                 }
                             });
-
-                    }
-                    else {
-                        
-                    }
+                        } else {
+                            Swal.fire('Error', 'ไม่สามารถลบได้เนื่องจากมีการใช้งานอยู่', 'error').then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    },
                 });
-        }
 
-        function submitForm() {
+            } else {
+
+            }
+        });
+    }
+
+    function submitForm() {
+        
+        var ad_name = $('#ad_name').val();
+        var ad_lastname = $('#ad_lastname').val();
+        var ad_email = $('#ad_email').val();
+        var ad_password = $('#ad_password').val();
+        if (ad_name != "" && ad_lastname != "" && ad_email != "" && ad_password) {
             var formData = new FormData($('#addUserForm')[0]);
-
             $.ajax({
                 method: 'POST',
                 url: "http://localhost/Project-main/black_end/ad/insertProcess.php",
@@ -165,29 +154,31 @@ ob_start();
                     if (result.success === true) {
                         Swal.fire({
                             title: "Success",
-                            text: "User added successfully",
+                            text: "เพิ่มรายการสำเร็จ",
                             icon: "success"
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 location.reload();
                             }
                         });
-
-                        // $('#addUserModal').modal('hide');
                     } else {
                         Swal.fire({
-                            title: "Error",
-                            text: "Error: " + result.message,
+                            title: "เกิดข้อผิดพลาด",
+                            text: result.message,
                             icon: "error"
                         });
                     }
                 },
-                error: function(xhr, status, error) {
-                    console.error("Ajax request failed:", status, error);
-                    console.log(xhr.responseText); // บันทึกการตอบสนองทั้งหมด
-                }
+                
+            });
+        } else {
+            Swal.fire({
+                title: "กรอกข้อมูลไม่ครบถ้วน",
+                icon: "warning"
             });
         }
+
+    }
 </script>
 <!-- ... -->
 <?php

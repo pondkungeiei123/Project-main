@@ -1,13 +1,13 @@
 <?php
 session_start();
-if ($_SESSION['status_login'] != 'success') {
-  header('Location: ../login/login.php'); // ส่งไปยังหน้าหลัก
-  exit;
-}
+// if ($_SESSION['status_login'] != 'success') {
+//   header('Location: ../login/login.php'); // ส่งไปยังหน้าหลัก
+//   exit;
+// }
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f60;">
-  <a class="navbar-brand" href="#">หน้าจัดการระบบ</a>
+<!-- <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f60;">
+  <a class="navbar-brand" href="#">หน้าจัดการระบบ1</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -15,7 +15,6 @@ if ($_SESSION['status_login'] != 'success') {
     <ul class="navbar-nav ml-auto">
       <i class="fa-solid fa-right-to-bracket"></i>
       <?php
-
       if (isset($_SESSION['ad_name'])) {
         echo '<span class="navbar-text mr-3" style="font-size: 18px; color: #333333;"> :' . $_SESSION['ad_name'] . '</span>';
         echo '<a href="../login/logout.php" class="navbar-text mr-3" style="font-size: 14px; color: #333333;">Logout</a>';
@@ -23,6 +22,24 @@ if ($_SESSION['status_login'] != 'success') {
       ?>
       </li>
     </ul>
+  </div>
+</nav> -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #fe9f60 !important">
+  <div class="container-fluid ">
+    <a class="navbar-brand" href="#">โปรแกรมจัดการระบบ</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ms-auto">
+        <?php
+        if (isset($_SESSION['ad_name'])) {
+          echo '<a href="#" class="navbar-brand" style="cursor: default;">'. $_SESSION['ad_name'] .'</a>';
+          echo '<a href="../login/logout.php" class="btn btn-danger " style="font-size: 18px; ">Logout</a>';
+        }
+        ?>
+      </div>
+    </div>
   </div>
 </nav>
 <style>

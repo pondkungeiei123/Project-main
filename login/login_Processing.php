@@ -25,11 +25,11 @@ $result = $stmt->get_result();
             header('Location: ../font_end/index.php'); // ส่งไปยังหน้าหลัก
             exit;
         } else {
-            echo "Invalid email or password1.";
+            echo "Password Fail";
             exit;
         }
     } else {
-        echo "Invalid email or password2.";
+        echo "No Email";
         exit;
     }
 }

@@ -16,38 +16,16 @@
                     รายชื่อช่าง
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="list_status.php">
-                    สถานะ
-                </a>
-            </li> -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="test.php">
-                    test
-                </a>
-            </li> -->
-
-           <li class="nav-item">
-                <a class="nav-link" href="test.php">
-                test
-                </a>
-            </li> 
             <li class="nav-item">
                 <a class="nav-link" href="hairstlye.php">
-                ทรงผม
+                    ทรงผม
                 </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link " href="repost.php">
+                <a class="nav-link " href="report.php">
                     รายงาน
                 </a>
             </li>
-           
-            <br>
-            <br>
-            <br>
-            <br>
-   
         </ul>
     </div>
 </nav>

@@ -3,8 +3,11 @@
 ob_start();
 ?>
 <!-- Your page-specific content -->
-<br>
-<h2> รายชื่อลูกค้า</h2> <!-- Add a title here -->
+<div class="row mt-5">
+    <div class="col-md-12 text-center">
+        <h2> รายชื่อลูกค้า</h2>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-md-12"> <br>

@@ -93,20 +93,19 @@
     }
 </style>
 
-<br>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fe9f6005">
-    <h2> รายชื่อช่างตัดผม</h2>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">
-                    เพิ่มข้อมูล
-                </button>
-            </li>
-        </ul>
+<div class="row mt-5">
+    <div class="col-md-12 text-center">
+        <h2> รายชื่อช่างตัดผม</h2>
     </div>
-</nav>
+</div>
 <div class="container">
+    <div class="row">
+        <div class="col-md-12 text-end">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                เพิ่มข้อมูล
+            </button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <br>
@@ -146,18 +145,15 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addUserModalLabel">เพิ่มข้อมูลช่างตัดผม</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body " style="max-height: 5000px; overflow-y: auto;">
+            <div class="modal-body">
                 <form id="resumeForm" action="/black_end/hs/insertProcess.php" method="post" enctype="multipart/form-data">
-
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -208,32 +204,31 @@
                             <div id="map"></div>
                         </div>
                         <div class="col-md-3">
-                        <label for="ba_namelocation">ชื่อสถานที่ :</label>
-                        <input type="text" id="namelocation" name="ba_namelocation">
+                            <label for="ba_namelocation">ชื่อสถานที่ :</label>
+                            <input type="text" id="namelocation" name="ba_namelocation">
                         </div>
                         <div class="col-md-3">
-                        <label for="ba_latitude">ละติจูด :</label>
-                        <input type="text" id="latitudeInput" name="ba_latitude">
+                            <label for="ba_latitude">ละติจูด :</label>
+                            <input type="text" id="latitudeInput" name="ba_latitude">
                         </div>
                         <div class="col-md-3">
-                        <label for="ba_longitude">ลองจิจูด:</label>
-                        <input type="text" id="longitudeInput" name="ba_longitude">
+                            <label for="ba_longitude">ลองจิจูด:</label>
+                            <input type="text" id="longitudeInput" name="ba_longitude">
                         </div>
                         <div class="col-md-12">
                             <button type="button" class="btn btn-primary btn-sm mt-2" onclick="getLocation()"> ยืนยันตำแหน่ง</button>
                         </div>
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="submitForm()">ส่งใบสมัคร</button>
+                    </div>
             </div>
-
-
-        </div>
-        <div class="card-footer d-flex justify-content-end">
-            <button type="button" class="btn btn-success" onclick="submitForm()">ส่งใบสมัคร</button>
         </div>
     </div>
 </div>
-</div>
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDELcj3pYg5wJLF_spRgzdz8EAjY-v85QY&callback=initAutocomplete&libraries=places&v=weekly" defer></script>
@@ -336,28 +331,28 @@
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
         searchBox.addListener("places_changed", () => {
-    const places = searchBox.getPlaces();
-    if (places.length == 0) {
-        return;
-    }
+            const places = searchBox.getPlaces();
+            if (places.length == 0) {
+                return;
+            }
 
-    const bounds = new google.maps.LatLngBounds();
+            const bounds = new google.maps.LatLngBounds();
 
-    places.forEach((place) => {
-        if (!place.geometry || !place.geometry.location) {
-            console.log("Returned place contains no geometry");
-            return;
-        }
+            places.forEach((place) => {
+                if (!place.geometry || !place.geometry.location) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
 
-        // Set the value of the input field with id "namelocation" to the name of the place
-        $("#namelocation").val(place.name);
+                // Set the value of the input field with id "namelocation" to the name of the place
+                $("#namelocation").val(place.name);
 
-        marker = new google.maps.Marker({
-            map: map,
-            title: place.name,
-            position: place.geometry.location,
-            draggable: true, // Make the marker draggable
-        });
+                marker = new google.maps.Marker({
+                    map: map,
+                    title: place.name,
+                    position: place.geometry.location,
+                    draggable: true, // Make the marker draggable
+                });
 
                 google.maps.event.addListener(marker, "dragend", function() {
                     $("#latitudeInput").val(marker.getPosition().lat());
