@@ -222,7 +222,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="submitForm()">ส่งใบสมัคร</button>
+                        <button type="button" class="btn btn-success" onclick="submitForm()">เพิ่มข้อมูล</button>
                     </div>
             </div>
         </div>

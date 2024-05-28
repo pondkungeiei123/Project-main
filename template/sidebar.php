@@ -8,7 +8,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="list_ad.php">
-                    รายชื่อพนักงาน
+                    รายชื่อผู้ใช้งานระบบ
                 </a>
             </li>
             <li class="nav-item">

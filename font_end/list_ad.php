@@ -6,7 +6,7 @@ ob_start();
 
 <div class="row mt-5">
     <div class="col-md-12 text-center">
-        <h2> รายชื่อพนักงาน</h2>
+        <h2> รายชื่อผู้ใช้งานระบบ</h2>
     </div>
 </div>
 <div class="container">
@@ -63,7 +63,7 @@ ob_start();
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addUserModal">เพิ่มพนักงาน</h5>
+                <h5 class="modal-title" id="addUserModal">รายชื่อผู้ใช้งานระบบ</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
