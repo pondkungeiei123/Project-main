@@ -27,8 +27,10 @@ ob_start();
                 <thead>
                     <tr>
                         <th width="5%">ลำดับ</th>
-                        <th width="40%">ชื่อทรงผม</th>
-                        <th width="45%">ราคา</th>
+                        <th width="20%">ชื่อทรงผม</th>
+                        <th width="20%">ราคา</th>
+                        <th width="20%">รูปภาพ</th>
+                        <th width="20%">ช่างตัดผม</th>
                         <th width="5%">แก้ไข</th>
                         <th width="5%">ลบ</th>
                     </tr>
@@ -48,11 +50,12 @@ ob_start();
                         <tr>
                            
                             <td><?= $k['hair_id']; ?></td>
-
                             <td><?= $k['hair_name']; ?></td>
                             <td><?= $k['hair_price']; ?></td>
+                            <td><img src="../asset/Photo/<?= $k['hair_photo']; ?>" width="100" height="100"></td>
+                            <td><?= $k['name_test']; ?></td>
                             <td><a href="hairstlye_formEdit.php?id=<?= $k['hair_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
-                            <td><button type="button" onclick="confirmDeletion('<?= $k['hair_id'] ?>')" class="btn btn-danger btn-circle btn-sm">ลบ</>
+                            <td><button type="button" onclick="confirmDeletion('<?= $k['hair_id'] ?>')" class="btn btn-danger btn-circle btn-sm">ลบ</button></td>
                         </tr>
                     <?php
                     }
@@ -82,6 +85,16 @@ ob_start();
                         <div class="form-group">
                             <label for="hair_price">ราคา:</label>
                             <input type="text" class="form-control" name="hair_price" required>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="hair_photo">รูปภาพ:</label>
+                                <input type="file" class="form-control" id="hair_photo" name="hair_photo" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name_test">ชื่อช่างตัดผม:</label>
+                            <input type="text" class="form-control" name="name_test" required>
                         </div>
                         <button type="button" class="btn btn-primary" onclick="submitForm()">ส่งข้อมูล </button>
                     </form>
@@ -129,6 +142,37 @@ ob_start();
                 // If the user clicks "Cancel" or closes the dialog
                 Swal.fire('ยกเลิก', 'ยกเลิกการลบแล้ว', 'info');
             }
+        });
+    }
+
+    function submitForm() {
+        var formData = new FormData($('#addUserForm')[0]);
+
+        $.ajax({
+            method: 'POST',
+            url: "http://localhost/Project-main/black_end/hairstlye/insertProcess.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(result) {
+                console.log(result);
+                if (result.success === true) {
+                    Swal.fire({
+                        title: "เพิ่ม",
+                        text: "เพิ่มทรงผมสำเร็จแล้ว",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+
+                    // $('#addUserModal').modal('hide');
+                } else {
+                // If the user clicks "Cancel" or closes the dialog
+                Swal.fire('ยกเลิก', 'ยกเลิกการลบแล้ว', 'info');
+            }
+        }
         });
     }
 

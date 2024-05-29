@@ -2,24 +2,42 @@
 // connect.php
 include "../../config.php";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Check if form data is received
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Process form data
-    $hair_name = $_POST["hair_name"];
-    $hair_price = $_POST["hair_price"];
+    if (isset($_FILES['hair_photo'])) {
+        $photo_file = $_FILES['hair_photo']['name'];
+        $photo_temp = $_FILES['hair_photo']['tmp_name'];
+        $file_info = pathinfo($photo_file);
+        $extension = $file_info['extension'];
 
-    $stmt = $conn->prepare("INSERT INTO hairstlye (hair_name, hair_price) VALUES (?, ?)");
+        // Define the directory to store the files
+        $target_directory = "../../asset/Photo/";
+        $target_directory .= date("Y-m-d") . "/";
 
-    if ($stmt) {
-        $stmt->bind_param("ss", $hair_name, $hair_price);
+        // Check and create the directory if it doesn't exist
+        if (!file_exists($target_directory)) {
+            if (!mkdir($target_directory, 0755, true)) {
+                echo "Failed to create the directory.";
+                exit;
+            }
+        }
+
+        // Create a new filename
+        $random_suffix = uniqid();
+        $target_file = $random_suffix . '_' . substr(basename($photo_file), 0, 10) . '.' . $extension;
+
+        // Move the file to the target directory
+        if (move_uploaded_file($photo_temp, $target_directory . $target_file)) {
+            $target_file = date("Y-m-d") . "/" . $target_file;
+    
+            $hair_name = $_POST["hair_name"];
+            $hair_price = $_POST["hair_price"];
+            $name_test = $_POST["name_test"];
+            // Handle file upload
+    
+
+        $stmt = $conn->prepare("INSERT INTO hairstlye (hair_name, hair_price, hair_photo, name_test) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $hair_name, $hair_price, $target_file, $name_test);
 
         // Execute the statement
         if ($stmt->execute()) {
@@ -31,10 +49,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Close statement
         $stmt->close();
     } else {
-        $response = array("success" => false, "message" => "Statement preparation failed");
+        $response = array("success" => false, "message" => "Failed to move uploaded file");
     }
 } else {
-    $response = array("success" => false, "message" => "Invalid request method");
+    $response = array("success" => false, "message" => "No file uploaded");
+}
+} else {
+$response = array("success" => false, "message" => "Invalid request method");
 }
 
 // Close connection

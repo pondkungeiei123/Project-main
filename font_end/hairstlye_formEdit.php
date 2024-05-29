@@ -24,26 +24,26 @@ ob_start();
 <body>
 
     <div class="container">
-        <h2>Edit User</h2>
+        <h2>เเก้ไขทรงผม</h2>
 
         <?php
-        // ตรวจสอบว่ามีพารามิเตอร์ id ที่ถูกส่งมาหรือไม่
+        // Check if the 'id' parameter is set
         if (isset($_GET['id'])) {
             $hair_id = $_GET['id'];
 
             require_once '../config.php';
 
-            // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
+            // Retrieve user data from the database
             $stmt = $conn->prepare("SELECT * FROM hairstlye WHERE hair_id = ?");
             $stmt->bind_param("i", $hair_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
-            // ตรวจสอบว่ามีข้อมูลหรือไม่
+            // Check if data exists
             if ($result->num_rows > 0) {
                 $adData = $result->fetch_assoc();
         ?>
-                <form action="../black_end/hairstlye/updateProcess.php" method="POST">
+                <form action="../black_end/hairstlye/updateProcess.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="hair_id" value="<?= $adData['hair_id']; ?>">
                     <div class="form-group">
                         <label for="hair_name">ชื่อทรงผม:</label>
@@ -53,10 +53,44 @@ ob_start();
                         <label for="hair_price">ราคา:</label>
                         <input type="text" class="form-control" name="hair_price" value="<?= $adData['hair_price']; ?>" required>
                     </div>
+                    <div class=" form-group ">
+                            <div class="form-group">
+                                <label for='hair_photo'>รูปทรงผม:</label>
+                                <?php
+                                echo "<img src='../asset/Photo/" . $adData['hair_photo'] . "' style='width:400px;height:400px;'>";
+                                ?>
 
-                    <button type="submit" class="btn btn-primary">ยืนยันการเเก้ไข</button>
+                            </div>
+                        </div>
+
+                    <div class="form-group">
+                        <label for="name_test">ช่างตัดผม:</label>
+                        <input type="text" class="form-control" name="name_test" value="<?= $adData['name_test']; ?>">
+                    </div>
+
+                    <button type="button" class="btn btn-primary" id="submitBtn">ยืนยันการแก้ไข</button>
                 </form>
-        <?php
+                </div>
+    <script>
+        // When the submit button is clicked
+        document.getElementById('submitBtn').addEventListener('click', function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+            // Show the SweetAlert2 confirmation
+            Swal.fire({
+                icon: 'success',
+                title: 'การแก้ไขเสร็จสมบูรณ์',
+                showConfirmButton: false,
+                timer: 1500 // Close after 1.5 seconds
+            }).then((result) => {
+                // If the ba clicks on "OK", submit the form
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    document.querySelector('form').submit();
+                }
+            });
+        });
+    </script>
+<?php
             } else {
                 echo "<p>User not found</p>";
             }
@@ -65,11 +99,9 @@ ob_start();
             $stmt->close();
             $conn->close();
         } else {
-            echo "<p>Invalid user ID</p>";
+            echo "<p>Invalid ba ID</p>";
         }
-        ?>
-
-    </div>
+?>
 
 </body>
 

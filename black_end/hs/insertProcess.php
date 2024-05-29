@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $ba_longitude = isset($_POST['ba_longitude']) ? $_POST['ba_longitude'] : 0.0;
 
             // SQL สำหรับเพิ่มข้อมูล
-           $sql = "INSERT INTO barber (ba_name, ba_lastname, ba_idcard, ba_email, ba_password, ba_phone, ba_latitude, ba_longitude, ba_certificate, ba_namelocation)
+            $sql = "INSERT INTO barber (ba_name, ba_lastname, ba_idcard, ba_email, ba_password, ba_phone, ba_latitude, ba_longitude, ba_certificate, ba_namelocation)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             // เตรียมคำสั่ง SQL
             $stmt = $conn->prepare($sql);
@@ -90,4 +90,3 @@ $conn->close();
 // ส่งผลลัพธ์ในรูปแบบ JSON
 header('Content-Type: application/json');
 echo json_encode($response);
-?>
