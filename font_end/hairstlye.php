@@ -8,14 +8,14 @@ ob_start();
         <h2> ทรงผม</h2>
     </div>
 </div>
-<div class="container">
+<!-- <div class="container">
     <div class="row">
         <div class="col-md-12 text-end">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
                 เพิ่มข้อมูล
             </button>
         </div>
-    </div>
+    </div> -->
 <!-- Your page-specific content -->
 
 <!-- Add a title here -->

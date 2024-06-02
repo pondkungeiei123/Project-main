@@ -47,7 +47,7 @@ ob_start();
                     <input type="hidden" name="hair_id" value="<?= $adData['hair_id']; ?>">
                     <div class="form-group">
                         <label for="hair_name">ชื่อทรงผม:</label>
-                        <input type="text" class="form-control" name="hair_name" value="<?= $adData['hair_name']; ?>" required>
+                        <input type="text" class="form-control" name="hair_name" value="<?= $adData['hair_name']; ?>" disabled>
                     </div>
                     <div class="form-group">
                         <label for="hair_price">ราคา:</label>
@@ -65,7 +65,7 @@ ob_start();
 
                     <div class="form-group">
                         <label for="name_test">ช่างตัดผม:</label>
-                        <input type="text" class="form-control" name="name_test" value="<?= $adData['name_test']; ?>">
+                        <input type="text" class="form-control" name="name_test" value="<?= $adData['name_test']; ?>" disabled>
                     </div>
 
                     <button type="button" class="btn btn-primary" id="submitBtn">ยืนยันการแก้ไข</button>
