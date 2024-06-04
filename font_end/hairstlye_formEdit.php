@@ -64,11 +64,12 @@ ob_start();
                         </div>
 
                     <div class="form-group">
-                        <label for="name_test">ช่างตัดผม:</label>
-                        <input type="text" class="form-control" name="name_test" value="<?= $adData['name_test']; ?>" disabled>
+                        <label for="ba_id">ช่างตัดผม:</label>
+                        <input type="text" class="form-control" name="ba_id" value="<?= $adData['ba_id']; ?>" disabled>
                     </div>
 
                     <button type="button" class="btn btn-primary" id="submitBtn">ยืนยันการแก้ไข</button>
+                    <a href="./hairstlye.php" class="btn btn-secondary">ย้อนกลับ</a>
                 </form>
                 </div>
     <script>

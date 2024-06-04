@@ -77,6 +77,8 @@
                         <input type="number" class="form-control" name="cus_age" value="<?= $cusData['cus_age']; ?>" required>
                     </div> -->
                     <button type="submit" class="btn btn-primary">ยืนยันการเเก้ไข</button>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">ย้อนกลับ</button>
+
                 </form>
         <?php
             } else {

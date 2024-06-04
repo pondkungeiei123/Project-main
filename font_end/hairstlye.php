@@ -8,15 +8,6 @@ ob_start();
         <h2> ทรงผม</h2>
     </div>
 </div>
-<!-- <div class="container">
-    <div class="row">
-        <div class="col-md-12 text-end">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                เพิ่มข้อมูล
-            </button>
-        </div>
-    </div> -->
-<!-- Your page-specific content -->
 
 <!-- Add a title here -->
 <div class="container">
@@ -39,21 +30,23 @@ ob_start();
                     <!-- ตรงนี้คือข้อมูลที่ถูกดึงมาแสดงในตาราง -->
                     <?php
                     require_once '../config.php';
-                    $stmt = $conn->prepare("SELECT * FROM hairstlye");
+                    $stmt = $conn->prepare("
+                        SELECT h.hair_id, h.hair_name, h.hair_price, h.hair_photo, b.ba_name
+                        FROM hairstlye h
+                        JOIN barber b ON h.ba_id = b.ba_id
+                    ");
                     $stmt->execute();
                     $resultSet = $stmt->get_result();
                     $data = $resultSet->fetch_all(MYSQLI_ASSOC);
 
                     foreach ($data as $k) {
                     ?>
-                    
                         <tr>
-                           
                             <td><?= $k['hair_id']; ?></td>
                             <td><?= $k['hair_name']; ?></td>
                             <td><?= $k['hair_price']; ?></td>
                             <td><img src="../asset/Photo/<?= $k['hair_photo']; ?>" width="100" height="100"></td>
-                            <td><?= $k['name_test']; ?></td>
+                            <td><?= $k['ba_name']; ?></td>
                             <td><a href="hairstlye_formEdit.php?id=<?= $k['hair_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
                             <td><button type="button" onclick="confirmDeletion('<?= $k['hair_id'] ?>')" class="btn btn-danger btn-circle btn-sm">ลบ</button></td>
                         </tr>
@@ -93,8 +86,8 @@ ob_start();
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name_test">ชื่อช่างตัดผม:</label>
-                            <input type="text" class="form-control" name="name_test" required>
+                            <label for="ba_id">ชื่อช่างตัดผม:</label>
+                            <input type="text" class="form-control" name="ba_id" required>
                         </div>
                         <button type="button" class="btn btn-primary" onclick="submitForm()">ส่งข้อมูล </button>
                     </form>

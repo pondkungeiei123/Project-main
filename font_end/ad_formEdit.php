@@ -63,7 +63,7 @@ ob_start();
                     </div>
 
                     <button type="button" class="btn btn-primary" id="submitBtn">ยืนยันการแก้ไข</button>
-
+                    <a href="./list_ad.php" class="btn btn-secondary">ย้อนกลับ</a>
                 </form>
 
 
