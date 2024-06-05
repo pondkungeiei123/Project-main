@@ -1,5 +1,5 @@
 <?php
-
+// This part is intentionally left blank or can be used for session handling or other PHP operations.
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,6 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #FFEBCD;
-            /* Dark grayish-blue background color */
             margin: 0;
             display: flex;
             align-items: center;
@@ -64,7 +63,6 @@
             width: 100%;
         }
 
-        /* เพิ่มสไตล์สำหรับปุ่มสมัครสมาชิก */
         .resume-button {
             background-color: #3498db;
             color: #fff;
@@ -75,35 +73,47 @@
             border-radius: 4px;
             width: 100%;
             margin-top: 10px;
-            /* เพิ่มขึ้นมาหน่อย */
         }
     </style>
 </head>
 
 <body>
-    <?
-
-
-    ?>
     <div class="login-container">
-        <h2>Login</h2>
+        <h2>เข้าสู่ระบบ</h2>
         <form class="login-form" action="./login_Processing.php" method="post">
             <div class="form-group">
-                <label for="email">email:</label>
+                <label for="email">อีเมล:</label>
                 <input type="text" id="email" name="email" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="password">รหัสผ่าน:</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
             <div class="form-group">
-                <button type="submit">Login</button>
+                <button type="submit">เข้าสู่ระบบ</button>
             </div>
         </form>
     </div>
 
+    <?php if (isset($_GET['error'])): ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: '<?php echo $_GET['error']; ?>'
+        }).then(() => {
+            // ลบพารามิเตอร์ error ออกจาก URL
+            if (history.pushState) {
+                var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+            } else {
+                window.location.href = window.location.href.split('?')[0];
+            }
+        });
+    </script>
+    <?php endif; ?>
 </body>
 
 </html>

@@ -69,22 +69,34 @@ ob_start();
 
     </div>
     <script>
-        // When the submit button is clicked
         document.getElementById('submitBtn').addEventListener('click', function(event) {
             // Prevent the default form submission
             event.preventDefault();
-            // Show the SweetAlert2 confirmation
-            Swal.fire({
-                icon: 'success',
-                title: 'การแก้ไขเสร็จสมบูรณ์',
-                showConfirmButton: false,
-                timer: 1500 // Close after 1.5 seconds
-            }).then((result) => {
-                // If the user clicks on "OK", submit the form
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    document.querySelector('form').submit();
-                }
-            });
+
+            // Check if the required fields are filled
+            var adPassword = document.querySelector('input[name="ad_password"]').value;
+
+            if (!adPassword) {
+                // Show the SweetAlert2 warning if fields are not filled
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ข้อมูลไม่ครบถ้วน',
+                    text: 'กรุณากรอกข้อมูลให้ครบถ้วน'
+                });
+            } else {
+                // Show the SweetAlert2 confirmation
+                Swal.fire({
+                    icon: 'success',
+                    title: 'การแก้ไขเสร็จสมบูรณ์',
+                    showConfirmButton: false,
+                    timer: 1000 
+                }).then((result) => {
+                    // If the user clicks on "OK", submit the form
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        document.querySelector('form').submit();
+                    }
+                });
+            }
         });
     </script>
 <?php

@@ -123,7 +123,7 @@ ob_start();
                 icon: 'success',
                 title: 'การแก้ไขเสร็จสมบูรณ์',
                 showConfirmButton: false,
-                timer: 1500 // Close after 1.5 seconds
+                timer: 1000 // Close after 1.5 seconds
             }).then((result) => {
                 // If the ba clicks on "OK", submit the form
                 if (result.dismiss === Swal.DismissReason.timer) {
