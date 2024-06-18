@@ -19,6 +19,25 @@ ob_start();
             background-color: #fe9f602e;
             margin: 0;
         }
+        .certificate-img {
+            width: 100%;
+            height: auto;
+            max-width: 300px;
+            max-height: 450px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            object-fit: cover;
+        }
+        .certificate-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .certificate-container img {
+            flex: 1 1 calc(33.333% - 10px);
+            margin: 5px;
+        }
     </style>
 </head>
 
@@ -47,31 +66,31 @@ ob_start();
                 <form action="../black_end/hs/updateProcess.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="ba_id" value="<?= $baData['ba_id']; ?>">
                     <div class="row">
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ba_name">ชื่อ:</label>
                                 <input type="text" class="form-control" name="ba_name" value="<?= $baData['ba_name']; ?>" required readonly>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ba_lastname">นามสกุล:</label>
                                 <input type="text" class="form-control" name="ba_lastname" value="<?= $baData['ba_lastname']; ?>" required readonly>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ba_email">Email:</label>
                                 <input type="email" class="form-control" name="ba_email" value="<?= $baData['ba_email']; ?>" required readonly>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ba_password">Password:</label>
                                 <input type="password" class="form-control" name="ba_password" required disabled>
                             </div>
                         </div>
-                        <div class=" col-md-6 ">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ba_phone">เบอร์โทรศัพท์:</label>
                                 <input type="phone" class="form-control" name="ba_phone" value="<?= $baData['ba_phone']; ?>" required readonly>
@@ -79,14 +98,14 @@ ob_start();
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="ba_namelocation">ชื่อสถานที่:</label>
+                                <label for="ba_namelocation">ชื่อร้าน/ที่อยู่ของช่าง:</label>
                                 <input type="text" class="form-control" id="ba_namelocation" name="ba_namelocation" value="<?= isset($baData['ba_namelocation']) ? $baData['ba_namelocation'] : ''; ?>" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="ba_longitude">ลองจิจูด:</label>
-                                <input type="text" class="form-control" id="ba_longitude" name="ba_longitude" value="<?= isset($baData['ba_longitude']) ? $baData['ba_longitude'] : ''; ?>" required readonly>
+                                <label for="ba_latitude">ละติจูด:</label>
+                                <input type="text" class="form-control" id="ba_latitude" name="ba_latitude" value="<?= isset($baData['ba_latitude']) ? $baData['ba_latitude'] : ''; ?>" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -96,23 +115,33 @@ ob_start();
                             </div>
                         </div>
 
-                        <div class=" col-md-12 ">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for='ba_certificate'>ใบเซอร์:</label>
-                                <?php
-                                echo "<img src='../asset/Certificate/" . $baData['ba_certificate'] . "' style='width:400px;heigh:400px;'>";
-                                ?>
-
+                                <div class="certificate-container">
+                                    <?php
+                                    $certificates = json_decode($baData['ba_certificate'], true);
+                                    if (!empty($certificates)) {
+                                        $count = 0;
+                                        foreach ($certificates as $certificate) {
+                                            if ($count >= 3) break;
+                                            echo "<img src='../asset/Certificate/" . $certificate . "' class='certificate-img'>";
+                                            $count++;
+                                        }
+                                    } else {
+                                        echo "<p>ไม่มีใบเซอร์</p>";
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </div>
 
                         <button type="button" class="btn btn-primary" id="submitBtn">ยืนยันการแก้ไข</button>
                         <a href="./list_hs.php" class="btn btn-secondary">ย้อนกลับ</a>
-
+                    </div>
                 </form>
-
-
     </div>
+
     <script>
         // When the submit button is clicked
         document.getElementById('submitBtn').addEventListener('click', function(event) {
@@ -125,7 +154,7 @@ ob_start();
                 showConfirmButton: false,
                 timer: 1000 // Close after 1.5 seconds
             }).then((result) => {
-                // If the ba clicks on "OK", submit the form
+                // If the user clicks on "OK", submit the form
                 if (result.dismiss === Swal.DismissReason.timer) {
                     document.querySelector('form').submit();
                 }

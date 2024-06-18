@@ -8,12 +8,17 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="list_ad.php">
-                    รายชื่อผู้ใช้งานระบบ
+                รายชื่อผู้ดูแลระบบ
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="list_hs.php">
                     รายชื่อช่าง
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="list_cus.php">
+                    รายชื่อลูกค้า
                 </a>
             </li>
             <li class="nav-item">

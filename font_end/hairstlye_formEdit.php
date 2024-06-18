@@ -52,7 +52,7 @@ ob_start();
                     </div>
                     <div class="form-group">
                         <label for="hair_price">ราคา:</label>
-                        <input type="text" class="form-control" name="hair_price" value="<?= $adData['hair_price']; ?>" required>
+                        <input type="text" class="form-control" name="hair_price" value="<?= $adData['hair_price']; ?>" disabled>
                     </div>
                     <div class="form-group">
                         <label for='hair_photo'>รูปทรงผม:</label>

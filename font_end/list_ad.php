@@ -3,10 +3,9 @@
 ob_start();
 ?>
 
-
 <div class="row mt-5">
     <div class="col-md-12 text-center">
-        <h2> รายชื่อผู้ใช้งานระบบ</h2>
+        <h2> รายชื่อผู้ดูแลระบบ</h2>
     </div>
 </div>
 <div class="container">
@@ -23,7 +22,6 @@ ob_start();
             <table class="table table-striped table-hover table-responsive table-bordered">
                 <thead>
                     <tr>
-                        <th width="5%">ลำดับ</th>
                         <th width="40%">ชื่อ</th>
                         <th width="45%">นามสกุล</th>
                         <th colspan="2">แก้ไข</th>
@@ -40,7 +38,6 @@ ob_start();
                     foreach ($data as $k) {
                     ?>
                         <tr>
-                            <td><?= $k['ad_id']; ?></td>
                             <td><?= $k['ad_name']; ?></td>
                             <td><?= $k['ad_lastname']; ?></td>
                             <td>
@@ -136,12 +133,19 @@ ob_start();
     }
 
     function submitForm() {
-        
         var ad_name = $('#ad_name').val();
         var ad_lastname = $('#ad_lastname').val();
         var ad_email = $('#ad_email').val();
         var ad_password = $('#ad_password').val();
-        if (ad_name != "" && ad_lastname != "" && ad_email != "" && ad_password) {
+
+        if (ad_name != "" && ad_lastname != "" && ad_email != "" && ad_password != "") {
+            if (!validateEmail(ad_email)) {
+                Swal.fire({
+                    title: "รูปแบบอีเมลไม่ถูกต้อง",
+                    icon: "warning"
+                });
+                return;
+            }
             var formData = new FormData($('#addUserForm')[0]);
             $.ajax({
                 method: 'POST',
@@ -177,7 +181,11 @@ ob_start();
                 icon: "warning"
             });
         }
+    }
 
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     }
 </script>
 <!-- ... -->

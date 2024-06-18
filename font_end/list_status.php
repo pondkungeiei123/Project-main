@@ -12,7 +12,6 @@ ob_start();
             <table class="table table-striped table-hover table-responsive table-bordered">
                 <thead>
                     <tr>
-                        <th width="5%">ลำดับ</th>
                         <th width="40%">user</th>
                         <th width="5%">ตรวจสอบ</th>
                     </tr>
@@ -29,7 +28,6 @@ ob_start();
                     foreach ($data as $k) {
                     ?>
                         <tr>
-                            <td><?= $k['user_id']; ?></td>
                             <td><?= $k['user_email']; ?></td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-sm" onclick="openModal('<?= $k['user_id']; ?>')">ตรวจสอบสถานะ</button>

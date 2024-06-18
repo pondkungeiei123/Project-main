@@ -113,7 +113,6 @@
             <table class="table table-striped table-hover table-responsive table-bordered">
                 <thead>
                     <tr>
-                        <th width="5%">ลำดับ</th>
                         <th width="40%">ชื่อ</th>
                         <th width="45%">นามสกุล</th>
                         <th width="5%">แก้ไข</th>
@@ -131,7 +130,6 @@
                     foreach ($data as $k) {
                     ?>
                         <tr>
-                            <td><?= $k['ba_id']; ?></td>
                             <td><?= $k['ba_name']; ?></td>
                             <td><?= $k['ba_lastname']; ?></td>
                             <td><a href="hs_formEdit.php?id=<?= $k['ba_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
@@ -196,7 +194,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ba_certificate">ส่งใบเซอร์:</label>
-                                <input type="file" class="form-control" id="ba_certificate" name="ba_certificate" accept="image/*">
+                                <input type="file" class="form-control" id="ba_certificate" name="ba_certificate[]" accept="image/*" multiple>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -204,7 +202,7 @@
                             <div id="map"></div>
                         </div>
                         <div class="col-md-3">
-                            <label for="ba_namelocation">ชื่อสถานที่ :</label>
+                            <label for="ba_namelocation">ชื่อร้าน/ที่อยู่ของช่าง :</label>
                             <input type="text" id="namelocation" name="ba_namelocation">
                         </div>
                         <div class="col-md-3">
@@ -219,14 +217,14 @@
                             <button type="button" class="btn btn-primary btn-sm mt-2" onclick="getLocation()"> ยืนยันตำแหน่ง</button>
                         </div>
 
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="submitForm()">เพิ่มข้อมูล</button>
-                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="submitForm()">เพิ่มข้อมูล</button>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -274,44 +272,95 @@
 
     // Function to handle the form submission for adding a new ba
     function submitForm() {
-        var formData = new FormData($('#resumeForm')[0]);
+    var formData = new FormData($('#resumeForm')[0]);
 
-        $.ajax({
-            method: 'POST',
-            url: "http://localhost/Project-main/black_end/hs/insertProcess.php",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(result) {
-                console.log(result); // 
-                if (result.success === true) {
-                    Swal.fire({
-                        title: "เพิ่มสำเร็จ",
-                        text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
-                        icon: "success"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: "เพิ่มไม่สำเร็จ",
-                        text: "เพิ่มผู้ใช้ไม่เรียบร้อยแล้ว: " + result.message,
-                        icon: "error"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        };
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("Ajax request failed:", status, error);
-                console.log(xhr.responseText);
-            }
+    // Validate form data
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var phonePattern = /^\d{10}$/;
+    var idcardPattern = /^\d{13}$/;
+
+    if (!$('#ba_name').val() || !$('#ba_lastname').val() || !$('#ba_idcard').val() || !$('#ba_email').val() || !$('#ba_password').val() || !$('#ba_phone').val()) {
+        Swal.fire({
+            title: "ข้อมูลไม่ครบถ้วน",
+            text: "กรุณากรอกข้อมูลให้ครบทุกช่อง",
+            icon: "error"
         });
+        return;
     }
+
+    if (!emailPattern.test($('#ba_email').val())) {
+        Swal.fire({
+            title: "อีเมลไม่ถูกต้อง",
+            text: "กรุณากรอกอีเมลให้ถูกต้อง",
+            icon: "error"
+        });
+        return;
+    }
+
+    if (!phonePattern.test($('#ba_phone').val())) {
+        Swal.fire({
+            title: "เบอร์โทรไม่ถูกต้อง",
+            text: "กรุณากรอกเบอร์โทรให้ถูกต้อง",
+            icon: "error"
+        });
+        return;
+    }
+
+    if (!idcardPattern.test($('#ba_idcard').val())) {
+        Swal.fire({
+            title: "หมายเลขบัตรประชาชนไม่ถูกต้อง",
+            text: "กรุณากรอกหมายเลขบัตรประชาชนให้ถูกต้อง",
+            icon: "error"
+        });
+        return;
+    }
+
+    if (!$('#ba_certificate').val()) {
+        Swal.fire({
+            title: "เพิ่มผู้ใช้ไม่สำเร็จ",
+            text: "ยังไม่ได้ใส่ใบเซอร์",
+            icon: "error",
+            confirmButtonText: 'ตกลง'
+        });
+        return;
+    }
+
+    proceedFormSubmission(formData);
+}
+
+function proceedFormSubmission(formData) {
+    $.ajax({
+        method: 'POST',
+        url: "http://localhost/Project-main/black_end/hs/insertProcess.php",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(result) {
+            console.log(result); 
+            if (result.success === true) {
+                Swal.fire({
+                    title: "เพิ่มสำเร็จ",
+                    text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
+                    icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "list_hs.php"; // Redirect to list_hs page
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "เพิ่มไม่สำเร็จ",
+                    text: "เพิ่มผู้ใช้ไม่สำเร็จ: " + result.message,
+                    icon: "error"
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+            console.log(xhr.responseText);
+        }
+    });
+}
 
 
     function initAutocomplete() {
