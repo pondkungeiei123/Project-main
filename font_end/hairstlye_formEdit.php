@@ -23,7 +23,7 @@ ob_start();
 
 <body>
     <div class="container">
-        <h2>เเก้ไขทรงผม</h2>
+        <h2>แก้ไขทรงผม</h2>
 
         <?php
         if (isset($_GET['id'])) {
@@ -52,13 +52,15 @@ ob_start();
                     </div>
                     <div class="form-group">
                         <label for="hair_price">ราคา:</label>
-                        <input type="text" class="form-control" name="hair_price" value="<?= $adData['hair_price']; ?>" disabled>
+                        <input type="text" class="form-control" name="hair_price" value="<?= $adData['hair_price']; ?>" required>
                     </div>
                     <div class="form-group">
                         <label for='hair_photo'>รูปทรงผม:</label>
-                        <?php
-                        echo "<img src='../asset/Photo/" . $adData['hair_photo'] . "' style='width:400px;height:400px;'>";
-                        ?>
+                        <img src='../asset/Photo/<?= $adData['hair_photo']; ?>' style='width:400px;height:400px;'>
+                        <div class="mt-2">
+                            <label for="new_hair_photo">อัปโหลดรูปใหม่:</label>
+                            <input type="file" class="form-control" name="new_hair_photo" accept="image/*">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="ba_name">ช่างตัดผม:</label>

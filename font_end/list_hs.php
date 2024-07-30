@@ -193,8 +193,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="ba_certificate">ส่งใบเซอร์:</label>
-                                <input type="file" class="form-control" id="ba_certificate" name="ba_certificate[]" accept="image/*" multiple>
+                                <label for="ce_photo">ส่งใบเซอร์:</label>
+                                <input type="file" class="form-control" id="ce_photo" name="ce_photo[]" accept="image/*" multiple>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -272,95 +272,95 @@
 
     // Function to handle the form submission for adding a new ba
     function submitForm() {
-    var formData = new FormData($('#resumeForm')[0]);
+        var formData = new FormData($('#resumeForm')[0]);
 
-    // Validate form data
-    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    var phonePattern = /^\d{10}$/;
-    var idcardPattern = /^\d{13}$/;
+        // Validate form data
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var phonePattern = /^\d{10}$/;
+        var idcardPattern = /^\d{13}$/;
 
-    if (!$('#ba_name').val() || !$('#ba_lastname').val() || !$('#ba_idcard').val() || !$('#ba_email').val() || !$('#ba_password').val() || !$('#ba_phone').val()) {
-        Swal.fire({
-            title: "ข้อมูลไม่ครบถ้วน",
-            text: "กรุณากรอกข้อมูลให้ครบทุกช่อง",
-            icon: "error"
-        });
-        return;
-    }
-
-    if (!emailPattern.test($('#ba_email').val())) {
-        Swal.fire({
-            title: "อีเมลไม่ถูกต้อง",
-            text: "กรุณากรอกอีเมลให้ถูกต้อง",
-            icon: "error"
-        });
-        return;
-    }
-
-    if (!phonePattern.test($('#ba_phone').val())) {
-        Swal.fire({
-            title: "เบอร์โทรไม่ถูกต้อง",
-            text: "กรุณากรอกเบอร์โทรให้ถูกต้อง",
-            icon: "error"
-        });
-        return;
-    }
-
-    if (!idcardPattern.test($('#ba_idcard').val())) {
-        Swal.fire({
-            title: "หมายเลขบัตรประชาชนไม่ถูกต้อง",
-            text: "กรุณากรอกหมายเลขบัตรประชาชนให้ถูกต้อง",
-            icon: "error"
-        });
-        return;
-    }
-
-    if (!$('#ba_certificate').val()) {
-        Swal.fire({
-            title: "เพิ่มผู้ใช้ไม่สำเร็จ",
-            text: "ยังไม่ได้ใส่ใบเซอร์",
-            icon: "error",
-            confirmButtonText: 'ตกลง'
-        });
-        return;
-    }
-
-    proceedFormSubmission(formData);
-}
-
-function proceedFormSubmission(formData) {
-    $.ajax({
-        method: 'POST',
-        url: "http://localhost/Project-main/black_end/hs/insertProcess.php",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(result) {
-            console.log(result); 
-            if (result.success === true) {
-                Swal.fire({
-                    title: "เพิ่มสำเร็จ",
-                    text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
-                    icon: "success"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "list_hs.php"; // Redirect to list_hs page
-                    }
-                });
-            } else {
-                Swal.fire({
-                    title: "เพิ่มไม่สำเร็จ",
-                    text: "เพิ่มผู้ใช้ไม่สำเร็จ: " + result.message,
-                    icon: "error"
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Ajax request failed:", status, error);
-            console.log(xhr.responseText);
+        if (!$('#ba_name').val() || !$('#ba_lastname').val() || !$('#ba_idcard').val() || !$('#ba_email').val() || !$('#ba_password').val() || !$('#ba_phone').val()) {
+            Swal.fire({
+                title: "ข้อมูลไม่ครบถ้วน",
+                text: "กรุณากรอกข้อมูลให้ครบทุกช่อง",
+                icon: "error"
+            });
+            return;
         }
-    });
-}
+
+        if (!emailPattern.test($('#ba_email').val())) {
+            Swal.fire({
+                title: "อีเมลไม่ถูกต้อง",
+                text: "กรุณากรอกอีเมลให้ถูกต้อง",
+                icon: "error"
+            });
+            return;
+        }
+
+        if (!phonePattern.test($('#ba_phone').val())) {
+            Swal.fire({
+                title: "เบอร์โทรไม่ถูกต้อง",
+                text: "กรุณากรอกเบอร์โทรให้ถูกต้อง",
+                icon: "error"
+            });
+            return;
+        }
+
+        if (!idcardPattern.test($('#ba_idcard').val())) {
+            Swal.fire({
+                title: "หมายเลขบัตรประชาชนไม่ถูกต้อง",
+                text: "กรุณากรอกหมายเลขบัตรประชาชนให้ถูกต้อง",
+                icon: "error"
+            });
+            return;
+        }
+
+        if (!$('#ce_photo').val()) {
+            Swal.fire({
+                title: "เพิ่มผู้ใช้ไม่สำเร็จ",
+                text: "ยังไม่ได้ใส่ใบเซอร์",
+                icon: "error",
+                confirmButtonText: 'ตกลง'
+            });
+            return;
+        }
+
+        proceedFormSubmission(formData);
+    }
+
+    function proceedFormSubmission(formData) {
+        $.ajax({
+            method: 'POST',
+            url: "http://localhost/Project-main/black_end/hs/insertProcess.php",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(result) {
+                console.log(result);
+                if (result.success === true) {
+                    Swal.fire({
+                        title: "เพิ่มสำเร็จ",
+                        text: "เพิ่มผู้ใช้เรียบร้อยแล้ว",
+                        icon: "success"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "list_hs.php"; // Redirect to list_hs page
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "เพิ่มไม่สำเร็จ",
+                        text: "เพิ่มผู้ใช้ไม่สำเร็จ: " + result.message,
+                        icon: "error"
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Ajax request failed:", status, error);
+                console.log(xhr.responseText);
+            }
+        });
+    }
 
 
     function initAutocomplete() {

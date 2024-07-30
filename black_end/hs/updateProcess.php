@@ -4,32 +4,28 @@ include "../../config.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $baId = $_POST['ba_id'];
-    $stmt = $conn->prepare("SELECT * FROM barber WHERE ba_id = ?");
+    $stmt = $conn->prepare("SELECT * FROM barber LEFT JOIN certificate ON barber.ba_id = certificate.ba_id WHERE barber.ba_id = ?");
     $stmt->bind_param("i", $baId);
     $stmt->execute();
     $result = $stmt->get_result();
-   
-    if ($result->num_rows > 0) {
-        // Fetch the existing ba data
-        $row = $result->fetch_assoc();
 
-        // Update ba data based on the form inputs
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
         $ba_phone = $_POST['ba_phone'];
         $ba_latitude = $_POST['ba_latitude'];
         $ba_longitude = $_POST['ba_longitude'];
 
-        // Check if the Certificate file is being updated
-        if (isset($_FILES['ba_certificate']) && $_FILES['ba_certificate']['size'] > 0) {
-            $certificate_file = $_FILES['ba_certificate']['name'];
-            $certificate_temp = $_FILES['ba_certificate']['tmp_name'];
+        // เริ่มต้นกับ ce_photo ที่มีอยู่ในฐานข้อมูล
+        $relative_path = $row['ce_photo'];
+
+        if (isset($_FILES['ce_photo']) && $_FILES['ce_photo']['size'] > 0) {
+            $certificate_file = $_FILES['ce_photo']['name'];
+            $certificate_temp = $_FILES['ce_photo']['tmp_name'];
             $file_info = pathinfo($certificate_file);
             $extension = $file_info['extension'];
 
-            // Define target directory
-            $target_directory = "../../asset/Certificate/";
-            $target_directory .= date("Y-m-d") . "/";
+            $target_directory = "../../BBapi/certificate/";
 
-            // Check and create directory if not exists
             if (!file_exists($target_directory)) {
                 if (!mkdir($target_directory, 0755, true)) {
                     echo json_encode(['success' => false, 'message' => 'Failed to create the directory']);
@@ -37,38 +33,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
-            // Generate new file name
             $random_suffix = uniqid();
-            $target_file = $random_suffix . '_' . substr(basename($certificate_file), 0, 10) . '.' . $extension;
+            $target_file = $target_directory . $random_suffix . '_' . substr(basename($certificate_file), 0, 10) . '.' . $extension;
 
-            // Move uploaded file to target location
-            if (move_uploaded_file($certificate_temp, $target_directory . $target_file)) {
-                $target_file = date("Y-m-d") . "/" . $target_file;
+            if (move_uploaded_file($certificate_temp, $target_file)) {
+                $relative_path = $random_suffix . '_' . substr(basename($certificate_file), 0, 10) . '.' . $extension;
             } else {
                 echo json_encode(['success' => false, 'message' => 'Failed to move the uploaded file']);
                 exit();
             }
-        } else {
-            // Keep the existing Certificate file if not updated
-            $target_file = $row['ba_certificate'];
         }
 
-        // Update the ba data in the database
-        $stmt_update = $conn->prepare("UPDATE barber SET ba_phone=?, ba_latitude=?, ba_longitude=?, ba_certificate=? WHERE ba_id=?");
-        $stmt_update->bind_param("ssssi", $ba_phone, $ba_latitude, $ba_longitude, $target_file, $baId);
+        // อัปเดตข้อมูลในตาราง certificate
+        $stmt_update = $conn->prepare("UPDATE certificate SET ce_photo=? WHERE ba_id=?");
+        $stmt_update->bind_param("si", $relative_path, $baId);
 
         if ($stmt_update->execute()) {
-            // Redirect to list_hs.php after updating the data successfully
+            // อัปเดตข้อมูลในตาราง barber
+            $stmt_barber_update = $conn->prepare("UPDATE barber SET ba_phone=?, ba_latitude=?, ba_longitude=? WHERE ba_id=?");
+            $stmt_barber_update->bind_param("sssi", $ba_phone, $ba_latitude, $ba_longitude, $baId);
+            $stmt_barber_update->execute();
+
             header("Location: ../../font_end/list_hs.php");
             exit();
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to update customer']);
+            echo json_encode(['success' => false, 'message' => 'Failed to update certificate']);
         }
 
         $stmt_update->close();
+        $stmt_barber_update->close();
         $conn->close();
     } else {
-        // If it's not a POST method, do nothing
         echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     }
 }

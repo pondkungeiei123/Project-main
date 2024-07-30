@@ -1,11 +1,8 @@
 <?php
-
 ob_start();
 ?>
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +16,7 @@ ob_start();
             background-color: #fe9f602e;
             margin: 0;
         }
+
         .certificate-img {
             width: 100%;
             height: auto;
@@ -30,17 +28,18 @@ ob_start();
             padding: 5px;
             object-fit: cover;
         }
+
         .certificate-container {
             display: flex;
             flex-wrap: wrap;
         }
+
         .certificate-container img {
             flex: 1 1 calc(33.333% - 10px);
             margin: 5px;
         }
     </style>
 </head>
-
 <body>
 
     <div class="container">
@@ -62,6 +61,17 @@ ob_start();
             // ตรวจสอบว่ามีข้อมูลหรือไม่
             if ($result->num_rows > 0) {
                 $baData = $result->fetch_assoc();
+
+                // Query the certificate for the barber
+                $cert_stmt = $conn->prepare("SELECT ce_photo FROM certificate WHERE ba_id = ?");
+                $cert_stmt->bind_param("i", $baId);
+                $cert_stmt->execute();
+                $cert_result = $cert_stmt->get_result();
+                $certificate = [];
+                while ($cert_row = $cert_result->fetch_assoc()) {
+                    $certificate[] = $cert_row['ce_photo'];
+                }
+                $cert_stmt->close();
         ?>
                 <form action="../black_end/hs/updateProcess.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="ba_id" value="<?= $baData['ba_id']; ?>">
@@ -117,15 +127,14 @@ ob_start();
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for='ba_certificate'>ใบเซอร์:</label>
+                                <label for='ce_photo'>ใบเซอร์:</label>
                                 <div class="certificate-container">
                                     <?php
-                                    $certificates = json_decode($baData['ba_certificate'], true);
-                                    if (!empty($certificates)) {
+                                    if (!empty($certificate)) {
                                         $count = 0;
-                                        foreach ($certificates as $certificate) {
+                                        foreach ($certificate as $certificate) {
                                             if ($count >= 3) break;
-                                            echo "<img src='../asset/Certificate/" . $certificate . "' class='certificate-img'>";
+                                            echo "<img src='../../BBapi/certificate/" . $certificate . "' class='certificate-img'>";
                                             $count++;
                                         }
                                     } else {
@@ -175,7 +184,6 @@ ob_start();
 ?>
 
 </body>
-
 </html>
 <?php
 $content = ob_get_clean();
