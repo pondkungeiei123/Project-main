@@ -22,7 +22,6 @@ ob_start();
                                 <option value="workschedule">รายงานตารางทำงาน</option>
                                 <option value="barber">รายงานช่างตัดผม</option>
                                 <option value="customer">รายงานลูกค้า</option>
-                                <!-- <option value="hairstyle">รายงานทรงผม</option> -->
                             </select>
                         </div>
                     </div>
@@ -69,9 +68,8 @@ ob_start();
 
 <script>
    function checkreporttype(e){
-       console.log($(e).val());
        var report_type = $(e).val();
-       if (report_type == "barber" || report_type == "customer" || report_type == "hairstyle"){
+       if (report_type === "barber" || report_type === "customer"){
            $("#input_date").hide();
        } else {
            $("#input_date").show();
@@ -80,14 +78,11 @@ ob_start();
    }
 
    function clearPreviousResults() {
-       // ซ่อนข้อความและตารางแสดงผลก่อนหน้านี้
        $('#textShow').attr('hidden', true);
        $('#report_result').attr('hidden', true);
-       // ลบข้อมูลใน DataTable ถ้ามี
        if ($.fn.DataTable.isDataTable('#report_result')) {
            $('#report_result').DataTable().clear().destroy();
        }
-       // ล้างหัวตาราง
        $('#tableHeader').html('');
    }
 
@@ -101,117 +96,89 @@ ob_start();
            success: function(result) {
                var reportType = result['type'];
                tableHeader(reportType);
-               if (!result.data || result.data.length == 0) {
+               if (!result.data || result.data.length === 0) {
                    $('#textShow').attr('hidden', false);
                    $('#report_result').attr('hidden', true);
                } else {
                    $('#textShow').attr('hidden', true);
                    $('#report_result').attr('hidden', false);
 
-                   var columns = [];
-                   if (reportType == 'booking') {
-                       columns = [{
-                               "data": "number"
-                           },
-                           {
-                               "data": "bk_startdate"
-                           },
-                           {
-                               "data": "hair_name"
-                           },
-                           {
-                               "data": "bk_price"
-                           },
-                           {
-                               "data": "cus_name"
-                           },
-                           {
-                               "data": "ba_name"
-                           }
-                       ];
-                   } else if (reportType == 'payment') {
-                       columns = [{
-                               "data": "number"
-                           },
-                           {
-                               "data": "bk_startdate"
-                           },
-                           {
-                               "data": "pm_amount"
-                           },
-                           {
-                               "data": "pm_time"
-                           },
-                           {
-                               "data": "cus_name"
-                           },
-                           {
-                               "data": "ba_name"
-                           }
-                       ];
-                   } else if (reportType == 'barber') {
-                       columns = [{
-                               "data": "number"
-                           },
-                           {
-                               "data": "ba_name"
-                           },
-                           {
-                               "data": "ba_lastname"
-                           },
-                           {
-                               "data": "ba_idcard"
-                           },
-                           {
-                               "data": "ba_namelocation"
-                           }
-                       ];
-                   } else if (reportType == 'customer') {
-                       columns = [{
-                               "data": "number"
-                           },
-                           {
-                               "data": "cus_name"
-                           },
-                           {
-                               "data": "cus_lastname"
-                           },
-                           {
-                               "data": "cus_email"
-                           }
-                       ];
-                   } else if (reportType == 'workschedule') {
-                       columns = [{
-                               "data": "number"
-                           },
-                           {
-                               "data": "ba_name"
-                           },
-                           {
-                               "data": "ws_startdate"
-                           },
-                           {
-                               "data": "ws_enddate"
-                           },
-                           {
-                               "data": "ws_status"
-                           }
-                       ];
-                   }
-                   
+                   var columns = getColumns(reportType);
                    dataTableCreate(result['data'], columns);
                }
            }
        });
    }
 
-   function report_pdf() {
-       var dataForm = $('#report_form').serialize();
-       window.open('reportPDF.php?' + dataForm, '_blank');
+   function getColumns(reportType) {
+       switch (reportType) {
+           case 'booking':
+               return [
+                   { "data": "number" },
+                   { "data": "bk_startdate" },
+                   { "data": "hair_name" },
+                   { "data": "bk_price" },
+                   { "data": "cus_name" },
+                   { "data": "ba_name" }
+               ];
+           case 'payment':
+               return [
+                   { "data": "number" },
+                   { "data": "bk_startdate" },
+                   { "data": "pm_amount" },
+                   { "data": "pm_time" },
+                   { "data": "cus_name" },
+                   { "data": "ba_name" }
+               ];
+           case 'barber':
+               return [
+                   { "data": "number" },
+                   { "data": "ba_name" },
+                   { "data": "ba_lastname" },
+                   { "data": "ba_idcard" },
+                   { "data": "ba_namelocation" }
+               ];
+           case 'customer':
+               return [
+                   { "data": "number" },
+                   { "data": "cus_name" },
+                   { "data": "cus_lastname" },
+                   { "data": "cus_email" }
+               ];
+           case 'workschedule':
+               return [
+                   { "data": "number" },
+                   { "data": "ba_name" },
+                   { "data": "ws_startdate" },
+                   { "data": "ws_enddate" },
+                   { "data": "ws_status" }
+               ];
+       }
    }
 
+   function report_pdf() {
+    var dataForm = $('#report_form').serialize();
+    
+    // Collect table data
+    var tableData = [];
+    $('#report_result tbody tr').each(function() {
+        var row = $(this).find('td').map(function() {
+            return $(this).text();
+        }).get();
+        tableData.push(row);
+    });
+    
+    // Convert table data to JSON
+    var jsonTableData = JSON.stringify(tableData);
+
+    // Create query string
+    var queryString = dataForm + '&tableData=' + encodeURIComponent(jsonTableData);
+
+    // Open reportPDF.php with query string
+    window.open('reportPDF.php?' + queryString, '_blank');
+}
+
    function dataTableCreate(data, columns) {
-       console.log(data);
        if ($.fn.DataTable.isDataTable('#report_result')) {
            $('#report_result').DataTable().destroy();
        }
@@ -224,68 +191,64 @@ ob_start();
 
    function tableHeader(reportType) {
        var html = '';
-       if (reportType == 'booking') {
-           html = `
-               <tr>
-                   <th>ลำดับ</th>
-                   <th>วันที่จอง</th>
-                   <th>ทรงผมที่ตัด</th>
-                   <th>ราคา</th>
-                   <th>ลูกค้า</th>
-                   <th>ชื่อช่าง</th>
-               </tr>
-           `;
-       } else if (reportType == 'payment') {
-           html = `
-               <tr>
-                   <th>ลำดับ</th>
-                   <th>วันที่จอง</th>
-                   <th>จำนวนเงิน</th>
-                   <th>วันที่ชำระ</th>
-                   <th>ลูกค้า</th>
-                   <th>ชื่อช่าง</th>
-               </tr>
-           `;
-       } else if (reportType == 'barber') {
-           html = `
-               <tr>
-                   <th>ลำดับ</th>
-                   <th>ชื่อช่าง</th>
-                   <th>นามสกุล</th>
-                   <th>บัตรประชาชน</th>
-                   <th>ที่ตั้งร้าน</th>
-               </tr>
-           `;
-       } else if (reportType == 'customer') {
-           html = `
-               <tr>
-                   <th>ลำดับ</th>
-                   <th>ชื่อลูกค้า</th>
-                   <th>นามสกุล</th>
-                   <th>อีเมล</th>
-               </tr>
-           `;
-       } else if (reportType == 'workschedule') {
-           html = `
-               <tr>
-                   <th>ลำดับ</th>
-                   <th>ชื่อช่าง</th>
-                   <th>วันที่เริ่มงาน</th>
-                   <th>วันที่สิ้นสุด</th>
-                   <th>สถานะ</th>
-               </tr>
-           `;
-       } 
-    //    else if (reportType == 'hairstyle') {
-    //        html = `
-    //            <tr>
-    //                <th>ลำดับ</th>
-    //                <th>ชื่อทรงผม</th>
-    //                <th>รายละเอียดทรงผม</th>
-    //                <th>ราคา</th>
-    //            </tr>
-    //        `;
-    //    }
+       switch (reportType) {
+           case 'booking':
+               html = `
+                   <tr>
+                       <th>ลำดับ</th>
+                       <th>วันที่จอง</th>
+                       <th>ทรงผมที่ตัด</th>
+                       <th>ราคา</th>
+                       <th>ลูกค้า</th>
+                       <th>ชื่อช่าง</th>
+                   </tr>
+               `;
+               break;
+           case 'payment':
+               html = `
+                   <tr>
+                       <th>ลำดับ</th>
+                       <th>วันที่จอง</th>
+                       <th>จำนวนเงิน</th>
+                       <th>วันที่ชำระ</th>
+                       <th>ลูกค้า</th>
+                       <th>ชื่อช่าง</th>
+                   </tr>
+               `;
+               break;
+           case 'barber':
+               html = `
+                   <tr>
+                       <th>ลำดับ</th>
+                       <th>ชื่อช่าง</th>
+                       <th>นามสกุล</th>
+                       <th>บัตรประชาชน</th>
+                       <th>ที่ตั้งร้าน</th>
+                   </tr>
+               `;
+               break;
+           case 'customer':
+               html = `
+                   <tr>
+                       <th>ลำดับ</th>
+                       <th>ชื่อลูกค้า</th>
+                       <th>นามสกุล</th>
+                       <th>อีเมล</th>
+                   </tr>
+               `;
+               break;
+           case 'workschedule':
+               html = `
+                   <tr>
+                       <th>ลำดับ</th>
+                       <th>ชื่อช่าง</th>
+                       <th>วันที่เริ่มงาน</th>
+                       <th>วันที่สิ้นสุด</th>
+                       <th>สถานะ</th>
+                   </tr>
+               `;
+               break;
+       }
        $('#tableHeader').html(html);
    }
 </script>
@@ -294,4 +257,3 @@ ob_start();
 $content = ob_get_clean();
 include '../template/master.php';
 ?>
-ผ

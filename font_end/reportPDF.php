@@ -21,6 +21,7 @@ $mpdf = new \Mpdf\Mpdf([
     ],
     'default_font' => 'sarabun'
 ]);
+
 include "../config.php";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -28,38 +29,13 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
 $dateStart = $_GET["dateStart"] . " 00:00:00";
 $dateEnd = $_GET["dateEnd"] . " 00:00:00";
 $report_type = $_GET['report_type'];
 
-if ($report_type == 'booking') {
-    $stmt = $conn->prepare("SELECT * FROM booking 
-                            JOIN customer ON booking.cus_id = customer.cus_id 
-                            JOIN hairstlye ON 
-                            .hair_id = hairstlye.hair_id 
-                            JOIN barber ON booking.ba_id = barber.ba_id 
-                            WHERE bk_startdate  >= ? AND bk_enddate <= ?");
-} elseif ($report_type == 'payment') {
-    $stmt = $conn->prepare("SELECT * FROM payment 
-                            JOIN booking ON payment.bk_id = booking.bk_id
-                            JOIN barber ON booking.ba_id = barber.ba_id 
-                            JOIN customer ON booking.cus_id = customer.cus_id 
-                            WHERE pm_time >= ? AND pm_time <= ?");
-} elseif ($report_type == 'barber') {
-    $stmt = $conn->prepare("SELECT * FROM barber");
-} elseif ($report_type == 'customer') {
-    $stmt = $conn->prepare("SELECT * FROM customer");
-} elseif ($report_type == 'workschedule') {
-    $stmt = $conn->prepare("SELECT *, TIMESTAMPDIFF(HOUR, ws_startdate, ws_enddate) AS total_time FROM workschedule 
-                            JOIN barber ON workschedule.ba_id = barber.ba_id 
-                            WHERE ws_startdate >= ? AND ws_enddate <= ?");
-}
+$tableData = isset($_GET['tableData']) ? json_decode($_GET['tableData'], true) : [];
 
-if ($report_type != 'barber' && $report_type != 'customer') {
-    $stmt->bind_param("ss", $dateStart, $dateEnd);
-}
-$stmt->execute();
-$result = $stmt->get_result();
 $title = array(
     'booking' => 'รายงานการจอง',
     'payment' => 'รายงานการชำระเงิน',
@@ -139,79 +115,16 @@ if ($report_type == 'booking') {
                     </thead>';
 }
 
-if ($result->num_rows > 0) {
+if (!empty($tableData)) {
     $number = 1;
-    while ($row = $result->fetch_assoc()) {
-        if ($report_type == 'booking' || $report_type == 'payment') {
-            $bk_startdate = DateTime::createFromFormat('Y-m-d H:i:s', $row['bk_startdate']);
-            $bk_startdate = $bk_startdate ? $bk_startdate->format('d/m/Y') : 'Invalid date';
-            $cus_name = $row['cus_name'] . ' ' . $row['cus_lastname'];
-            $ba_name = $row['ba_name'] . ' ' . $row['ba_lastname'];
-            if ($report_type == 'booking') {
-                $bk_price = number_format($row['bk_price'], 0) . ' บาท';
-                $tableReport .= '<tbody>
-                                    <tr>
-                                        <td style="text-align:center">' . $number++ . '</td>
-                                        <td style="padding-left:10px">' . $bk_startdate . '</td>
-                                        <td style="padding-left:10px">' . $row['hair_name'] . '</td>
-                                        <td style="text-align:right;padding-right:10px">' . $bk_price . '</td>
-                                        <td style="padding-left:10px">' . $cus_name . '</td>
-                                        <td style="padding-left:10px">' . $ba_name . '</td>
-                                    </tr>
-                                </tbody>';
-            } elseif ($report_type == 'payment') {
-                $pm_time = DateTime::createFromFormat('Y-m-d H:i:s', $row['pm_time']);
-                $pm_time = $pm_time ? $pm_time->format('d/m/Y') : 'Invalid date';
-                $pm_amount = number_format($row['pm_amount'], 0) . ' บาท';
-                $tableReport .= '<tbody>
-                                    <tr>
-                                        <td style="text-align:center">' . $number++ . '</td>
-                                        <td style="padding-left:10px">' . $bk_startdate . '</td>
-                                        <td style="text-align:right;padding-right:10px">' . $pm_amount . '</td>
-                                        <td style="padding-left:10px">' . $pm_time . '</td>
-                                        <td style="padding-left:10px">' . $cus_name . '</td>
-                                        <td style="padding-left:10px">' . $ba_name . '</td>
-                                    </tr>
-                                </tbody>';
-            }
-        } elseif ($report_type == 'barber') {
-            $tableReport .= '<tbody>
-                                <tr>
-                                    <td style="text-align:center">' . $number++ . '</td>
-                                    <td style="padding-left:10px">' . $row['ba_name'] . '</td>
-                                    <td style="padding-left:10px">' . $row['ba_lastname'] . '</td>
-                                    <td style="padding-left:10px">' . $row['ba_idcard'] . '</td>
-                                    <td style="padding-left:10px">' . $row['ba_namelocation'] . '</td>
-                                </tr>
-                            </tbody>';
-        } elseif ($report_type == 'customer') {
-            $status = $row['cus_status'] == 'active' ? 'ปกติ' : 'ยกเลิก';
-            $tableReport .= '<tbody>
-                                <tr>
-                                    <td style="text-align:center">' . $number++ . '</td>
-                                    <td style="padding-left:10px">' . $row['cus_name'] . '</td>
-                                    <td style="padding-left:10px">' . $row['cus_lastname'] . '</td>
-                                    <td style="padding-left:10px">' . $row['cus_email'] . '</td>
-                                    <td style="padding-left:10px">' . $status . '</td>
-                                </tr>
-                            </tbody>';
-        } elseif ($report_type == 'workschedule') {
-            $ws_startdate = DateTime::createFromFormat('Y-m-d H:i:s', $row['ws_startdate']);
-            $ws_startdate = $ws_startdate ? $ws_startdate->format('d/m/Y H:i') : 'Invalid date';
-            $ws_enddate = DateTime::createFromFormat('Y-m-d H:i:s', $row['ws_enddate']);
-            $ws_enddate = $ws_enddate ? $ws_enddate->format('d/m/Y H:i') : 'Invalid date';
-            $ws_status = $row['ws_status'] == 'completed' ? 'เสร็จสิ้น' : 'ระหว่างดำเนินการ';
-            $tableReport .= '<tbody>
-                                <tr>
-                                    <td style="text-align:center">' . $number++ . '</td>
-                                    <td style="padding-left:10px">' . $row['ba_name'] . ' ' . $row['ba_lastname'] . '</td>
-                                    <td style="padding-left:10px">' . $ws_startdate . '</td>
-                                    <td style="padding-left:10px">' . $ws_enddate . '</td>
-                                    <td style="padding-left:10px">' . $row['total_time'] . ' ชั่วโมง</td>
-                                    <td style="padding-left:10px">' . $ws_status . '</td>
-                                </tr>
-                            </tbody>';
+    foreach ($tableData as $row) {
+        $tableReport .= '<tbody>
+                            <tr>';
+        foreach ($row as $cell) {
+            $tableReport .= '<td style="padding-left:10px">' . htmlspecialchars($cell) . '</td>';
         }
+        $tableReport .= '  </tr>
+                        </tbody>';
     }
 }
 
