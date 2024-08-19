@@ -40,7 +40,7 @@ $title = array(
     'booking' => 'รายงานการจอง',
     'payment' => 'รายงานการชำระเงิน',
     'barber' => 'รายงานช่างตัดผม',
-    'customer' => 'รายงานลูกค้า',
+    'customer' => 'รายงานจำการเข้าใช้บริการ',
     'workschedule' => 'รายงานตารางทำงาน'
 );
 
@@ -98,8 +98,9 @@ if ($report_type == 'booking') {
                             <th>ลำดับ</th>
                             <th>ชื่อลูกค้า</th>
                             <th>นามสกุล</th>
+                             <th>เบอร์โทรศัพท์</th>
                             <th>อีเมล</th>
-                            <th>สถานะ</th>
+                            
                         </tr>
                     </thead>';
 } elseif ($report_type == 'workschedule') {
@@ -108,8 +109,7 @@ if ($report_type == 'booking') {
                             <th>ลำดับ</th>
                             <th>ชื่อช่าง</th>
                             <th>วันที่เริ่มงาน</th>
-                            <th>วันที่สิ้นสุด</th>
-                            <th>จำนวนชั่วโมง</th>
+                            <th>วันที่สิ้นสุด</th>            
                             <th>สถานะ</th>
                         </tr>
                     </thead>';

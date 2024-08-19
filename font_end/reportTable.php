@@ -1,5 +1,4 @@
 <?php
-// connect.php
 header('Content-Type: application/json; charset=UTF-8');
 
 include "../config.php";
@@ -14,24 +13,31 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $dateStart = $_GET["dateStart"] . " 00:00:00";
     $dateEnd = $_GET["dateEnd"] . " 23:59:59";
 
+    // Debugging: Output date range
+    error_log("Date Start: $dateStart");
+    error_log("Date End: $dateEnd");
+
     if ($report_type == 'booking') {
         $stmt = $conn->prepare("SELECT * FROM booking 
                                 JOIN customer ON booking.cus_id = customer.cus_id 
                                 JOIN hairstlye ON booking.hair_id = hairstlye.hair_id 
                                 JOIN barber ON booking.ba_id = barber.ba_id 
-                                WHERE bk_startdate  >= ? AND bk_enddate <= ? ");
+                                WHERE bk_startdate >= ? AND bk_enddate <= ?");
         $stmt->bind_param("ss", $dateStart, $dateEnd);
     } elseif ($report_type == 'payment') {
         $stmt = $conn->prepare("SELECT * FROM payment 
                                 JOIN booking ON payment.bk_id = booking.bk_id
                                 JOIN barber ON booking.ba_id = barber.ba_id 
                                 JOIN customer ON booking.cus_id = customer.cus_id 
-                                WHERE pm_time >= ? AND pm_time <= ? ");
+                                WHERE pm_time >= ? AND pm_time <= ?");
         $stmt->bind_param("ss", $dateStart, $dateEnd);
     } elseif ($report_type == 'barber') {
         $stmt = $conn->prepare("SELECT ba_name, ba_lastname, ba_idcard, ba_namelocation FROM barber");
     } elseif ($report_type == 'customer') {
-        $stmt = $conn->prepare("SELECT cus_name, cus_lastname, cus_email FROM customer");
+        $stmt = $conn->prepare("SELECT cm.cus_name, cm.cus_lastname, cm.cus_phone, cm.cus_email, COUNT(pm.pm_id) AS total FROM `payment` AS pm
+                                LEFT JOIN booking AS bk ON pm.bk_id = bk.bk_id
+                                LEFT JOIN customer AS cm ON bk.cus_id = cm.cus_id
+                                GROUP BY cm.cus_id");
     } elseif ($report_type == 'workschedule') {
         $stmt = $conn->prepare("SELECT ba_name, ws_startdate, ws_enddate, ws_status FROM workschedule 
                                 JOIN barber ON workschedule.ba_id = barber.ba_id");
@@ -41,12 +47,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         exit();
     }
 
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $data = [];
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
 
     if ($result->num_rows > 0) {
         $number = 1;
+        $data = [];
         if ($report_type == 'booking') {
             while ($row = $result->fetch_assoc()) {
                 $bk_startdate = DateTime::createFromFormat('Y-m-d H:i:s', $row['bk_startdate']);
@@ -90,7 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     'number' => $row['number'],
                     'cus_name' => $row['cus_name'],
                     'cus_lastname' => $row['cus_lastname'],
-                    'cus_email' => $row['cus_email']
+                    'cus_phone' => $row['cus_phone'],
+                    'cus_email' => $row['cus_email'],
+                    'total' => $row['total']
                 ];
             }
         } elseif ($report_type == 'workschedule') {
@@ -113,16 +124,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
         $response = array('type' => $report_type, 'data' => $data);
     } else {
-        $response = array('type' => $report_type, 'data' => []);
+        $response = array('type' => $report_type, 'data' => [], 'message' => 'No data found for the given date range');
     }
 } else {
     $response = array("success" => false, "message" => "Invalid request method");
 }
 
-// Close connection
 $conn->close();
-
-// Send JSON response
-header('Content-Type: application/json');
 echo json_encode($response);
 ?>

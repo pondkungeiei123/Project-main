@@ -22,7 +22,7 @@ ob_start();
                         <th width="20%">ราคา</th>
                         <th width="20%">รูปภาพ</th>
                         <th width="20%">ช่างตัดผม</th>
-                        <th width="10%">รายละเอียด</th>
+                        <!-- <th width="10%">รายละเอียด</th> -->
                         <!-- <th width="10%">ลบ</th> -->
                     </tr>
                 </thead>
@@ -45,7 +45,7 @@ ob_start();
                             <td><?= htmlspecialchars($k['hair_price']); ?></td>
                             <td><img src="../../BBapi/hair/<?= htmlspecialchars($k['hair_photo']); ?>" width="100" height="100"></td>
                             <td><?= htmlspecialchars($k['ba_name']); ?></td>
-                            <td><button type="button" onclick="showHairDetails(<?= htmlspecialchars($k['hair_id']); ?>)" class="btn btn-warning btn-sm">ดูรายละเอียด</button></td>
+                            <!-- <td><button type="button" onclick="showHairDetails(<?= htmlspecialchars($k['hair_id']); ?>)" class="btn btn-warning btn-sm">ดูรายละเอียด</button></td> -->
                             <!-- <td><button type="button" onclick="confirmDeletion('<?= $k['hair_id'] ?>')" class="btn btn-danger btn-circle btn-sm">ลบ</button></td> -->
                         </tr>
                     <?php
