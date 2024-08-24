@@ -68,7 +68,7 @@ ob_start();
     function checkreporttype(e) {
         var report_type = $(e).val();
         if (report_type === "barber" || report_type === "customer") {
-            $("#input_date").hide();
+            $("#input_date").show();
         } else {
             $("#input_date").show();
         }
@@ -86,10 +86,12 @@ ob_start();
 
     function report_result() {
         var form = $('#report_form').serialize();
+        var dateStart = $('#dateStart').val() + " 00:00:00";
+        var dateEnd = $('#dateEnd').val() + " 23:59:59";
         $.ajax({
             type: "GET",
             url: "reportTable.php",
-            data: form,
+            data: form + "&dateStartFull=" + encodeURIComponent(dateStart) + "&dateEndFull=" + encodeURIComponent(dateEnd),
             dataType: "JSON",
             success: function(result) {
                 console.log(result); // ตรวจสอบผลลัพธ์ที่ได้
@@ -167,6 +169,12 @@ ob_start();
                     },
                     {
                         "data": "ba_namelocation"
+                    },
+                    {
+                        "data": "total_bookings"
+                    },
+                    {
+                        "data": "total_income"
                     }
                 ];
             case 'customer':
@@ -186,7 +194,10 @@ ob_start();
                         "data": "cus_email"
                     },
                     {
-                        "data": "total"
+                        "data": "total_visits"
+                    },
+                    {
+                        "data": "total_amount"
                     }
                 ];
             case 'workschedule':
@@ -271,25 +282,28 @@ ob_start();
                 break;
             case 'barber':
                 html = `
-                   <tr>
-                       <th>ลำดับ</th>
-                       <th>ชื่อช่าง</th>
-                       <th>นามสกุล</th>
-                       <th>บัตรประชาชน</th>
-                       <th>ที่ตั้งร้าน</th>
-                   </tr>
+               <tr>
+                   <th>ลำดับ</th>
+                   <th>ชื่อช่าง</th>
+                   <th>นามสกุล</th>
+                   <th>บัตรประชาชน</th>
+                   <th>ที่ตั้งร้าน</th>
+                   <th>จำนวนครั้งที่ตัดผม</th>
+                   <th>รายได้รวม</th>
+               </tr>
                `;
                 break;
             case 'customer':
                 html = `
-                   <tr>
-                       <th>ลำดับ</th>
-                       <th>ชื่อลูกค้า</th>
-                       <th>นามสกุลลูกค้า</th>
-                       <th>เบอร์โทรศัพท์</th>
-                       <th>อีเมล</th>
-                       <th>จำนวนครั้งที่ใช้บริการ</th>
-                   </tr>
+               <tr>
+                   <th>ลำดับ</th>
+                   <th>ชื่อลูกค้า</th>
+                   <th>นามสกุลลูกค้า</th>
+                   <th>เบอร์โทรศัพท์</th>
+                   <th>อีเมล</th>
+                   <th>จำนวนครั้งที่ใช้บริการ</th>
+                   <th>ยอดรวมที่ชำระเงิน</th>
+               </tr>
                `;
                 break;
             case 'workschedule':

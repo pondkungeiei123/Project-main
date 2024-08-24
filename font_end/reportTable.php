@@ -10,8 +10,8 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $report_type = $_GET["report_type"];
-    $dateStart = $_GET["dateStart"] . " 00:00:00";
-    $dateEnd = $_GET["dateEnd"] . " 23:59:59";
+    $dateStart = $_GET["dateStartFull"] ?? $_GET["dateStart"] . " 00:00:00";
+    $dateEnd = $_GET["dateEndFull"] ?? $_GET["dateEnd"] . " 23:59:59";
 
     // Debugging: Output date range
     error_log("Date Start: $dateStart");
@@ -32,15 +32,30 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 WHERE pm_time >= ? AND pm_time <= ?");
         $stmt->bind_param("ss", $dateStart, $dateEnd);
     } elseif ($report_type == 'barber') {
-        $stmt = $conn->prepare("SELECT ba_name, ba_lastname, ba_idcard, ba_namelocation FROM barber");
+        $stmt = $conn->prepare("SELECT b.ba_id, b.ba_name, b.ba_lastname, b.ba_idcard, b.ba_namelocation, 
+                                COUNT(DISTINCT bk.bk_id) AS total_bookings,
+                                COALESCE(SUM(p.pm_amount), 0) AS total_income
+                                FROM barber b
+                                LEFT JOIN booking bk ON b.ba_id = bk.ba_id
+                                LEFT JOIN payment p ON bk.bk_id = p.bk_id
+                                WHERE bk.bk_startdate >= ? AND bk.bk_startdate <= ?
+                                GROUP BY b.ba_id");
+        $stmt->bind_param("ss", $dateStart, $dateEnd);
     } elseif ($report_type == 'customer') {
-        $stmt = $conn->prepare("SELECT cm.cus_name, cm.cus_lastname, cm.cus_phone, cm.cus_email, COUNT(pm.pm_id) AS total FROM `payment` AS pm
-                                LEFT JOIN booking AS bk ON pm.bk_id = bk.bk_id
-                                LEFT JOIN customer AS cm ON bk.cus_id = cm.cus_id
+        $stmt = $conn->prepare("SELECT cm.cus_name, cm.cus_lastname, cm.cus_phone, cm.cus_email, 
+                                COUNT(pm.pm_id) AS total_visits, 
+                                SUM(pm.pm_amount) AS total_amount 
+                                FROM `customer` AS cm
+                                LEFT JOIN booking AS bk ON cm.cus_id = bk.cus_id
+                                LEFT JOIN payment AS pm ON bk.bk_id = pm.bk_id
+                                WHERE bk.bk_startdate >= ? AND bk.bk_enddate <= ?
                                 GROUP BY cm.cus_id");
+        $stmt->bind_param("ss", $dateStart, $dateEnd);
     } elseif ($report_type == 'workschedule') {
         $stmt = $conn->prepare("SELECT ba_name, ws_startdate, ws_enddate, ws_status FROM workschedule 
-                                JOIN barber ON workschedule.ba_id = barber.ba_id");
+                                JOIN barber ON workschedule.ba_id = barber.ba_id
+                                WHERE ws_startdate >= ? AND ws_enddate <= ?");
+        $stmt->bind_param("ss", $dateStart, $dateEnd);
     } else {
         $response = array("success" => false, "message" => "Invalid report type");
         echo json_encode($response);
@@ -89,7 +104,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     'ba_name' => $row['ba_name'],
                     'ba_lastname' => $row['ba_lastname'],
                     'ba_idcard' => $row['ba_idcard'],
-                    'ba_namelocation' => $row['ba_namelocation']
+                    'ba_namelocation' => $row['ba_namelocation'],
+                    'total_bookings' => $row['total_bookings'],
+                    'total_income' => number_format($row['total_income'], 2) . ' บาท'
                 ];
             }
         } elseif ($report_type == 'customer') {
@@ -101,7 +118,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     'cus_lastname' => $row['cus_lastname'],
                     'cus_phone' => $row['cus_phone'],
                     'cus_email' => $row['cus_email'],
-                    'total' => $row['total']
+                    'total_visits' => $row['total_visits'],
+                    'total_amount' => number_format($row['total_amount'], 2) . ' บาท'
                 ];
             }
         } elseif ($report_type == 'workschedule') {
@@ -111,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $ws_startdate = $ws_startdate ? $ws_startdate->format('d/m/Y H:i:s') : 'Invalid date';
                 $ws_enddate = DateTime::createFromFormat('Y-m-d H:i:s', $row['ws_enddate']);
                 $ws_enddate = $ws_enddate ? $ws_enddate->format('d/m/Y H:i:s') : 'Invalid date';
-                $ws_status = $row['ws_status'] == 1 ? 'พร้อม' : 'ไม่พร้อม';
+                $ws_status = $row['ws_status'] == 1 ? 'ยืนยัน' : 'ยกเลิก';
                 $data[] = [
                     'number' => $row['number'],
                     'ba_name' => $row['ba_name'],
@@ -132,4 +150,3 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $conn->close();
 echo json_encode($response);
-?>
