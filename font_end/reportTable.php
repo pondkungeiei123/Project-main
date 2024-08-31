@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     'ba_idcard' => $row['ba_idcard'],
                     'ba_namelocation' => $row['ba_namelocation'],
                     'total_bookings' => $row['total_bookings'],
-                    'total_income' => number_format($row['total_income'], 2) . ' บาท'
+                    'total_income' => number_format($row['total_income'],) . ' บาท'
                 ];
             }
         } elseif ($report_type == 'customer') {
@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     'cus_phone' => $row['cus_phone'],
                     'cus_email' => $row['cus_email'],
                     'total_visits' => $row['total_visits'],
-                    'total_amount' => number_format($row['total_amount'], 2) . ' บาท'
+                    'total_amount' => number_format($row['total_amount'],) . ' บาท'
                 ];
             }
         } elseif ($report_type == 'workschedule') {

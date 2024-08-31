@@ -1,46 +1,59 @@
-// Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#292b2c';
-
-// Bar Chart Example
-var ctx = document.getElementById("myBarChart");
-var myLineChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [{
-      label: "Revenue",
-      backgroundColor: "rgba(2,117,216,1)",
-      borderColor: "rgba(2,117,216,1)",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
-    }],
-  },
-  options: {
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'month'
-        },
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          maxTicksLimit: 6
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          min: 0,
-          max: 15000,
-          maxTicksLimit: 5
-        },
-        gridLines: {
-          display: true
-        }
-      }],
-    },
-    legend: {
-      display: false
-    }
+// ฟังก์ชันดึงข้อมูลจาก PHP และแปลงข้อมูล
+function fetchMonthlyData() {
+    return fetch('/Project-main/font_end/get_daily_revenue.php?period=monthly')
+        .then(response => response.json())
+        .then(data => {
+            return {
+                months: data.dates,
+                revenueData: data.revenues
+            };
+        });
   }
-});
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    fetchMonthlyData().then(data => {
+        Highcharts.chart('bar-container', {
+            chart: {
+                type: 'column', // ใช้ 'column' แทน 'bar'
+            },
+            title: {
+                text: 'กราฟแสดงรายได้ต่อเดือน'
+            },
+            xAxis: {
+                categories: data.months, // แสดงเดือนบนแกน X
+                title: {
+                    text: 'เดือน'
+                },
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '12px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'รายได้ (บาท)'
+                },
+                min: 0,
+                gridLineWidth: 1,
+                tickAmount: 5
+            },
+            tooltip: {
+                shared: true,
+                headerFormat: '<span style="font-size:12px"><b>{point.x}</b></span><br>',
+                pointFormat: '{series.name}: <b>{point.y}</b><br>'
+            },
+            series: [{
+                name: 'รายได้',
+                data: data.revenueData.map(revenue => parseFloat(revenue)), // แปลงข้อมูลเป็นตัวเลข
+                color: 'rgba(2,117,216,1)'
+            }],
+            legend: {
+                enabled: false
+            }
+        });
+    }).catch(error => console.error('Error:', error));
+  });
+  

@@ -12,7 +12,8 @@
     <!-- Add HTTPS for SweetAlert2 -->
     <link rel="stylesheet" href="../asset/css/sweetalert2.min.css">
     <link href="../asset/dataTable/datatables.min.css" rel="stylesheet">
-    
+
+
     <style>
         body {
             display: flex;
@@ -49,7 +50,7 @@
         </div>
     </div>
     <?php include '../template/scripts.php'; ?>
-    
+
 </body>
 
 </html>

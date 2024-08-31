@@ -21,10 +21,11 @@ ob_start();
             <h3> </h3>
             <table class="table table-striped table-hover table-responsive table-bordered">
                 <thead>
-                    <tr>
+                <tr>
                         <th width="40%">ชื่อ</th>
                         <th width="45%">นามสกุล</th>
-                        <th colspan="2">แก้ไข</th>
+                        <th width="5%">แก้ไข</th>
+                        <th width="5%">ลบ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,10 +41,8 @@ ob_start();
                         <tr>
                             <td><?= $k['ad_name']; ?></td>
                             <td><?= $k['ad_lastname']; ?></td>
-                            <td>
-                                <a href="ad_formEdit.php?id=<?= $k['ad_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a>
-                                <!-- <button type="button" onclick="edit('<?= $k['ad_id'] ?>')" class="btn btn-warning btn-sm">แก้ไข</button> -->
-                                <button type="button" onclick="confirmDeletion('<?= $k['ad_id'] ?>')" class="btn btn-danger btn-circle btn-sm">ลบ</button>
+                            <td><a href="hs_formEdit.php?id=<?= $k['ad_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
+                            <td><button type="button" onclick="confirmDeletion('<?= $k['ad_id'] ?>')" class="btn btn-danger btn-sm">ลบ</button></td>
                         </tr>
                     <?php
                     }
@@ -173,7 +172,7 @@ ob_start();
                         });
                     }
                 },
-                
+
             });
         } else {
             Swal.fire({
