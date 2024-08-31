@@ -8,10 +8,15 @@ function fetchMonthlyData() {
                 revenueData: data.revenues
             };
         });
-  }
-  
-  document.addEventListener('DOMContentLoaded', function () {
+}
+
+document.addEventListener('DOMContentLoaded', function () {
     fetchMonthlyData().then(data => {
+        // กำหนดสีที่ต้องการ
+        const colors = [
+         '#7fc6c4', '#8de4a5', '#b89ad6', '#7d7d7d', '#f8c54e'
+        ];
+
         Highcharts.chart('bar-container', {
             chart: {
                 type: 'column', // ใช้ 'column' แทน 'bar'
@@ -47,13 +52,15 @@ function fetchMonthlyData() {
             },
             series: [{
                 name: 'รายได้',
-                data: data.revenueData.map(revenue => parseFloat(revenue)), // แปลงข้อมูลเป็นตัวเลข
-                color: 'rgba(2,117,216,1)'
+                data: data.revenueData.map((revenue, index) => ({
+                    y: parseFloat(revenue),
+                    color: colors[index % colors.length] // ใช้สีจากอาร์เรย์
+                })),
+                colorByPoint: true // ใช้สีที่กำหนดไว้ในข้อมูล
             }],
             legend: {
                 enabled: false
             }
         });
     }).catch(error => console.error('Error:', error));
-  });
-  
+});

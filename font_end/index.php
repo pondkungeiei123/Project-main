@@ -3,14 +3,14 @@ ob_start();
 ?>
 <div class="row mt-5">
     <div class="col-md-12 text-center">
-    <h3 class="header-title">หน้าตรวจสอบข้อมูล</h3>
+        <h3 class="header-title">หน้าตรวจสอบข้อมูล</h3>
     </div>
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <figure class="highcharts-figure">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <figure class="highcharts-figure text-center">
                 <div id="area-container"></div> <!-- สำหรับกราฟพื้นที่ -->
             </figure>
         </div>

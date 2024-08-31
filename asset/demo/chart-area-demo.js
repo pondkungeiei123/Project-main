@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             series: [{
                 name: 'รายได้',
-                data: data
+                data: data,
+                color: '#FF7F50' // เปลี่ยนสีของกราฟที่นี่
             }]
         });
     }).catch(error => console.error('Error:', error));

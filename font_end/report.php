@@ -162,9 +162,6 @@ ob_start();
                         "data": "ba_name"
                     },
                     {
-                        "data": "ba_lastname"
-                    },
-                    {
                         "data": "ba_idcard"
                     },
                     {
@@ -285,7 +282,6 @@ ob_start();
                <tr>
                    <th>ลำดับ</th>
                    <th>ชื่อช่าง</th>
-                   <th>นามสกุล</th>
                    <th>บัตรประชาชน</th>
                    <th>ที่ตั้งร้าน</th>
                    <th>จำนวนครั้งที่ตัดผม</th>

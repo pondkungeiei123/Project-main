@@ -46,7 +46,7 @@ ob_start();
 </div>
 
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg"> <!-- เพิ่มคลาส modal-lg เพื่อขยายขนาด modal -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="detailsModalLabel">รายละเอียดลูกค้า</h5>
@@ -61,6 +61,16 @@ ob_start();
         </div>
     </div>
 </div>
+
+<style>
+    .modal-dialog {
+        max-width: 60%; /* ปรับความกว้างของ modal ตามที่ต้องการ */
+    }
+
+    #detailsContent table {
+        width: 100%; /* ทำให้ตารางขยายเต็มความกว้างของ modal */
+    }
+</style>
 
 <script>
 function showDetails(id) {
