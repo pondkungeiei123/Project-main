@@ -90,7 +90,7 @@ if ($report_type == 'booking') {
                             <th>บัตรประชาชน</th>
                             <th>ที่ตั้งร้าน</th>
                             <th>จำนวนครั้งที่ตัดผม</th>
-                            <th>รายได้รวม</th>
+                            <th>ค่าใช้จ่ายทั้งหมด</th>
                         </tr>
                     </thead>';
 } elseif ($report_type == 'customer') {
@@ -102,7 +102,7 @@ if ($report_type == 'booking') {
                              <th>เบอร์โทรศัพท์</th>
                             <th>อีเมล</th>
                             <th>จำนวนครั้งที่ใช้บริการ</th>
-                            <th>รายได้รวม</th>
+                            <th>ค่าใช้จ่ายทั้งหมด</th>
                         </tr>
                     </thead>';
 } elseif ($report_type == 'workschedule') {

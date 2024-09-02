@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>หน้าต่างระบบจัดการข้อมูล</title>
     <!-- Add HTTPS for jQuery and Popper.js -->
 
     <link rel="stylesheet" href="../asset/bootstrap-5.3.2-dist/bootstrap-5.3.2-dist/css/bootstrap.min.css">

@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $ws_startdate = $ws_startdate ? $ws_startdate->format('d/m/Y H:i:s') : 'Invalid date';
                 $ws_enddate = DateTime::createFromFormat('Y-m-d H:i:s', $row['ws_enddate']);
                 $ws_enddate = $ws_enddate ? $ws_enddate->format('d/m/Y H:i:s') : 'Invalid date';
-                $ws_status = $row['ws_status'] == 1 ? 'ยืนยัน' : 'ยกเลิก';
+                $ws_status = $row['ws_status'] == 1 ? 'รอยืนยัน' : 'ยืนยัน'; 
                 $data[] = [
                     'number' => $row['number'],
                     'ba_name' => $row['ba_name'],

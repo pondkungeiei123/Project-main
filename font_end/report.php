@@ -19,7 +19,7 @@ ob_start();
                             <select id="report_type" name="report_type" class="form-control" onchange="checkreporttype(this)">
                                 <option value="booking">รายงานการจอง</option>
                                 <option value="payment">รายงานการชำระเงิน</option>
-                                <option value="workschedule">รายงานตารางทำงาน</option>
+                                <option value="workschedule">รายงานตารางลงงาน</option>
                                 <option value="barber">รายงานช่างตัดผม</option>
                                 <option value="customer">รายงานจำนวนการเข้าใช้บริการ</option>
                             </select>
@@ -285,7 +285,7 @@ ob_start();
                    <th>บัตรประชาชน</th>
                    <th>ที่ตั้งร้าน</th>
                    <th>จำนวนครั้งที่ตัดผม</th>
-                   <th>รายได้รวม</th>
+                   <th>ค่าใช้จ่ายทั้งหมด</th>
                </tr>
                `;
                 break;
@@ -298,7 +298,7 @@ ob_start();
                    <th>เบอร์โทรศัพท์</th>
                    <th>อีเมล</th>
                    <th>จำนวนครั้งที่ใช้บริการ</th>
-                   <th>รายได้รวม</th>
+                   <th>ค่าใช้จ่ายทั้งหมด</th>
                </tr>
                `;
                 break;
