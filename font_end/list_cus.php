@@ -84,6 +84,8 @@ function showDetails(id) {
                         <tr><th>นามสกุล</th><td>${data.customer.cus_lastname}</td></tr>
                         <tr><th>อีเมล</th><td>${data.customer.cus_email}</td></tr>
                         <tr><th>เบอร์โทรศัพท์</th><td>${data.customer.cus_phone}</td></tr>
+                        <tr><th>จำนวนการใช้บริการ</th><td>${data.customer.total_visits} ครั้ง</td></tr>
+                        <tr><th>รายได้รวม</th><td>${data.customer.total_amount} บาท</td></tr>
                     </table>
                 `;
                 new bootstrap.Modal(document.getElementById('detailsModal')).show();

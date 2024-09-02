@@ -41,7 +41,7 @@ ob_start();
                         <tr>
                             <td><?= $k['ad_name']; ?></td>
                             <td><?= $k['ad_lastname']; ?></td>
-                            <td><a href="hs_formEdit.php?id=<?= $k['ad_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
+                            <td><a href="ad_formEdit.php?id=<?= $k['ad_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
                             <td><button type="button" onclick="confirmDeletion('<?= $k['ad_id'] ?>')" class="btn btn-danger btn-sm">ลบ</button></td>
                         </tr>
                     <?php
