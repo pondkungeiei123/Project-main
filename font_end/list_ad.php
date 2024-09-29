@@ -73,7 +73,7 @@ ob_start();
                         <input type="text" class="form-control" id="ad_lastname" name="ad_lastname" required>
                     </div>
                     <div class="form-group">
-                        <label for="ad_email">Email:</label>
+                        <label for="ad_email">Email:</label> 
                         <input type="email" class="form-control" id="ad_email" name="ad_email" required>
                     </div>
                     <div class="form-group">

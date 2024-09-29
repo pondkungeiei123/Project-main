@@ -14,8 +14,8 @@ ob_start();
             <table class="table table-striped table-hover table-responsive table-bordered">
                 <thead>
                     <tr>
-                        <th width="50%">ชื่อ</th>
-                        <th width="55%">นามสกุล</th>
+                        <th width="45%">ชื่อ</th>
+                        <th width="45%">นามสกุล</th>
                         <th width="25%">ดูรายละเอียด</th>
                     </tr>
                 </thead>

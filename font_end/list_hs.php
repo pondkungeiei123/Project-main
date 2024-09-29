@@ -115,7 +115,7 @@
                     <tr>
                         <th width="40%">ชื่อ</th>
                         <th width="45%">นามสกุล</th>
-                        <th width="5%">แก้ไข</th>
+                        <th width="10%">ดูรายละเอียด</th>
                         <th width="5%">ลบ</th>
                     </tr>
                 </thead>
@@ -132,7 +132,7 @@
                         <tr>
                             <td><?= $k['ba_name']; ?></td>
                             <td><?= $k['ba_lastname']; ?></td>
-                            <td><a href="hs_formEdit.php?id=<?= $k['ba_id']; ?>" class="btn btn-warning btn-sm">แก้ไข</a></td>
+                            <td><a href="hs_formEdit.php?id=<?= $k['ba_id']; ?>" class="btn btn-warning btn-sm">ดูรายละเอียด</a></td>
                             <td><button type="button" onclick="confirmDeletion('<?= $k['ba_id'] ?>')" class="btn btn-danger btn-sm">ลบ</button></td>
                         </tr>
                     <?php
